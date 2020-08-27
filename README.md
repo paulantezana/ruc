@@ -1,1 +1,1 @@
-# BUSCA RUC
+# RUC

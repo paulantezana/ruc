@@ -16,7 +16,11 @@
                 <tr>
                     <td>
                         <div class="SnAvatar">
-                            <img src="<?= URL_PATH ?>/assets/images/icon/144.png" alt="avatar">
+                            <?php if($row['avatar'] !== ''): ?>
+                                <img class="SnAvatar-img" src="<?= URL_PATH ?><?= $row['avatar'] ?>" alt="avatar">
+                            <?php else: ?>
+                                <div class="SnAvatar-text"><?= substr($row['user_name'], 0, 2); ?></div>
+                            <?php endif; ?>
                         </div>
                     </td>
                     <td><?= $row['user_name'] ?></td>
@@ -31,10 +35,10 @@
                     </td>
                     <td>
                         <div class="SnTable-action">
-                            <div class="SnBtn icon jsUserOption" data-tooltip="Cambiar contraseña" onclick="userShowModalUpdatePassword(<?= $row['user_id'] ?>)">
+                            <div class="SnBtn icon jsUserOption" title="Cambiar contraseña" onclick="userShowModalUpdatePassword(<?= $row['user_id'] ?>)">
                                 <i class="fas fa-key"></i>
                             </div>
-                            <div class="SnBtn icon jsUserOption" data-tooltip="Editar" onclick="userShowModalUpdate(<?= $row['user_id'] ?>)">
+                            <div class="SnBtn icon jsUserOption" title="Editar" onclick="userShowModalUpdate(<?= $row['user_id'] ?>)">
                                 <i class="fas fa-edit"></i>
                             </div>
                         </div>

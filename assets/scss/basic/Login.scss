@@ -1,7 +1,8 @@
 .Login{
-  width: 320px;
+  width: 350px;
   max-width: 100%;
   margin: auto;
+  padding: 1rem;
   @include from(l){
     width: 320px;
   }

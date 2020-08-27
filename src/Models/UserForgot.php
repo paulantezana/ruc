@@ -8,7 +8,7 @@ class UserForgot extends Model
         parent::__construct("user_forgot", "user_forgot_id", $db);
     }
 
-    public function insert($user, $userId)
+    public function insert(array $user, int $userId)
     {
         try {
             $currentDate = date('Y-m-d H:i:s');
@@ -33,7 +33,7 @@ class UserForgot extends Model
         }
     }
 
-    public function getBySecretKey($secretKey)
+    public function getBySecretKey(string $secretKey)
     {
         try {
             $stmt = $this->db->prepare('SELECT user_forgot_id, user_id, secret_key, created_at FROM user_forgot WHERE secret_key = :secret_key AND used = 0 LIMIT 1');

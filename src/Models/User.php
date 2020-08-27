@@ -4,19 +4,19 @@ class User extends Model
 {
     public function __construct(PDO $connection)
     {
-        parent::__construct('user', 'user_id', $connection);
+        parent::__construct('users', 'user_id', $connection);
     }
 
-    public function paginate($page, $limit = 10, $search = '')
+    public function paginate(int $page, int $limit = 10, string $search = '')
     {
         try {
             $offset = ($page - 1) * $limit;
-            $totalRows = $this->db->query("SELECT COUNT(*) FROM user WHERE user_name LIKE '%{$search}%'")->fetchColumn();
+            $totalRows = $this->db->query("SELECT COUNT(*) FROM users WHERE user_name LIKE '%{$search}%'")->fetchColumn();
             $totalPages = ceil($totalRows / $limit);
 
-            $stmt = $this->db->prepare("SELECT user.*, ur.description as user_role FROM user
-                                        INNER JOIN user_role ur on user.user_role_id = ur.user_role_id
-                                        WHERE user.user_name LIKE :search LIMIT $offset, $limit");
+            $stmt = $this->db->prepare("SELECT users.*, ur.description as user_role FROM users
+                                        INNER JOIN user_role ur on users.user_role_id = ur.user_role_id
+                                        WHERE users.user_name LIKE :search LIMIT $offset, $limit");
             $stmt->bindValue(':search', '%' . $search . '%');
 
             if (!$stmt->execute()) {
@@ -36,10 +36,10 @@ class User extends Model
         }
     }
 
-    public function login($user, $password)
+    public function login(string $user, string $password)
     {
         try {
-            $stmt = $this->db->prepare('SELECT * FROM user WHERE email = :email AND password = :password LIMIT 1');
+            $stmt = $this->db->prepare('SELECT * FROM users WHERE email = :email AND password = :password LIMIT 1');
             $stmt->bindParam(':email', $user);
             $stmt->bindValue(':password', sha1(trim($password)));
 
@@ -49,7 +49,7 @@ class User extends Model
             $dataUser = $stmt->fetch();
 
             if ($dataUser == false) {
-                $stmt = $this->db->prepare('SELECT * FROM user WHERE user_name = :user_name AND password = :password LIMIT 1');
+                $stmt = $this->db->prepare('SELECT * FROM users WHERE user_name = :user_name AND password = :password LIMIT 1');
                 $stmt->bindParam(':user_name', $user);
                 $stmt->bindValue(':password', sha1(trim($password)));
 
@@ -73,11 +73,11 @@ class User extends Model
         }
     }
 
-    public function insert($user, $userId)
+    public function insert(array $user, int $userId)
     {
         try {
             $currentDate = date('Y-m-d H:i:s');
-            $stmt = $this->db->prepare('INSERT INTO user (user_name, email, password, full_name, user_role_id, created_at, created_user_id)
+            $stmt = $this->db->prepare('INSERT INTO users (user_name, email, password, full_name, user_role_id, created_at, created_user_id)
                                                     VALUES (:user_name, :email, :password, :full_name, :user_role_id, :created_at, :created_user_id)');
 
             $stmt->bindValue(':user_name', $user['userName']);

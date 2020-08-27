@@ -35,17 +35,25 @@
                         <li>
                             <div class="HeaderMenu-profile Header-action">
                                 <div class="SnAvatar">
-                                    <img src="<?= URL_PATH ?>/assets/images/icon/144.png" alt="avatar">
+                                    <?php if($_SESSION[SESS_USER]['avatar'] !== ''): ?>
+                                        <img class="SnAvatar-img" src="<?= URL_PATH ?><?= $_SESSION[SESS_USER]['avatar'] ?>" alt="avatar">
+                                    <?php else: ?>
+                                        <div class="SnAvatar-text"><?= substr($_SESSION[SESS_USER]['user_name'], 0, 2); ?></div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <ul>
                                 <li class="User-item SnMt-2 SnMb-2">
                                     <a href="<?= URL_PATH ?>/user/profile" class="SnAvatar">
-                                        <img src="<?= URL_PATH ?>/assets/images/icon/144.png" alt="avatar">
+                                        <?php if($_SESSION[SESS_USER]['avatar'] !== ''): ?>
+                                            <img class="SnAvatar-img" src="<?= URL_PATH ?><?= $_SESSION[SESS_USER]['avatar'] ?>" alt="avatar">
+                                        <?php else: ?>
+                                            <div class="SnAvatar-text"><?= substr($_SESSION[SESS_USER]['user_name'], 0, 2); ?></div>
+                                        <?php endif; ?>
                                     </a>
                                     <div>
-                                        <div class="User-title"><strong id="userTitleInfo"></strong></div>
-                                        <div class="User-description" id="userDescriptionInfo"></div>
+                                        <div class="User-title"><strong id="userTitleInfo"><?= $_SESSION[SESS_USER]['email'] ?></strong></div>
+                                        <div class="User-description" id="userDescriptionInfo"><?= $_SESSION[SESS_USER]['user_name'] ?></div>
                                     </div>
                                 </li>
                                 <li class="divider"></li>
@@ -94,7 +102,7 @@
                         <?php endif; ?>
                     </ul>
                     <div class="AsideFooter">
-                        <div class="SnSwitch">
+                        <div class="SnSwitch" title="Cambiar tema">
                             <input class="SnSwitch-control" type="checkbox" id="themeMode">
                             <label class="SnSwitch-label" for="themeMode"></label>
                         </div>

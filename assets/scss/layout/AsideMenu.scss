@@ -103,7 +103,7 @@ $asideFooterHeight: 32px;
           display: none;
           a {
             padding: 10px 10px 10px 24px;
-            height: 49px;
+            // height: 49px;
           }
         }
         &:hover {
@@ -126,6 +126,7 @@ $asideFooterHeight: 32px;
         > a {
           padding: 12px 16px 12px 16px;
           text-align: center;
+          height: 49px;
           > span {
             position: absolute;
             left: 100%;
@@ -168,9 +169,9 @@ $asideFooterHeight: 32px;
 // ----------------------------------------------------------------------------
 // Aside Header
 .AsideHeader {
-  height: $headerHeight + 4px;
+  height: $headerHeight;
   padding: 10px 20px;
-  border-bottom: 4px solid var(--snColor1);
+  border-bottom: 1px solid $menuBorderColor;
 }
 
 // ----------------------------------------------------------------------------
@@ -222,12 +223,4 @@ $asideFooterHeight: 32px;
 }
 .SnAdminL2:not(.AsideMenu-is-show){
   @include AsideHeaderInSmall();
-}
-
-.icon-down::before{
-  content: "\25BC";
-}
-
-.icon-up::before{
-  content: "\25B2";
 }

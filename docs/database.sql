@@ -28,7 +28,7 @@ CREATE TABLE user_role_authorization(
     ON UPDATE NO ACTION ON DELETE NO ACTION
 ) ENGINE=InnoDB;
 
-CREATE TABLE user(
+CREATE TABLE users(
     user_id INT AUTO_INCREMENT NOT NULL,
     user_name VARCHAR(64) NOT NULL UNIQUE,
     password VARCHAR(64) NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE user_forgot(
     created_user_id INT,
     updated_user_id INT,
     CONSTRAINT pk_user_forgot PRIMARY KEY (user_forgot_id),
-    CONSTRAINT fk_user_forgot_user FOREIGN KEY (user_id) REFERENCES user (user_id)
+    CONSTRAINT fk_user_forgot_user FOREIGN KEY (user_id) REFERENCES users (user_id)
         ON UPDATE NO ACTION ON DELETE NO ACTION
 ) ENGINE=InnoDB;
 
@@ -80,7 +80,7 @@ INSERT INTO user_role (created_at, created_user_id, description, state)
             VALUES ('2020-02-17 00:00:00', '0', 'Administrador', 1),
                     ('2020-02-17 00:00:00', '0', 'Usuario', 1);
 
-INSERT INTO user(user_name, password, full_name, avatar, email, user_role_id)
+INSERT INTO users(user_name, password, full_name, avatar, email, user_role_id)
         VALUES ('admin1',sha1('admin1'),'admin1','','admin@admin.com',1);
 
 INSERT INTO user_role_authorization (user_role_id,app_authorization_id)

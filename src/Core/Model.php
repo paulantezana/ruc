@@ -7,7 +7,7 @@ class Model
     protected $tableID;
     protected $db;
 
-    public function __construct($table, $tableID, PDO $db)
+    public function __construct(string $table, string $tableID, PDO $db)
     {
         $this->table = $table;
         $this->tableID = $tableID;
@@ -27,7 +27,7 @@ class Model
         }
     }
 
-    public function paginate($page, $limit = 20)
+    public function paginate(int $page, int $limit = 20)
     {
         try {
             $offset = ($page - 1) * $limit;
@@ -52,7 +52,7 @@ class Model
         }
     }
 
-    public function getById($id)
+    public function getById(int $id)
     {
         try {
             $stmt = $this->db->prepare("SELECT * FROM $this->table WHERE $this->tableID = :$this->tableID LIMIT 1");
@@ -66,7 +66,7 @@ class Model
         }
     }
 
-    public function getBy($columnName, $value)
+    public function getBy(string $columnName, $value)
     {
         try {
             $stmt = $this->db->prepare("SELECT * FROM $this->table WHERE $columnName = :$columnName LIMIT 1");
@@ -80,7 +80,7 @@ class Model
         }
     }
 
-    public function deleteById($id)
+    public function deleteById(int $id)
     {
         try {
             $stmt = $this->db->prepare("DELETE FROM {$this->table} WHERE {$this->tableID} = :{$this->tableID}");
@@ -95,7 +95,7 @@ class Model
         }
     }
 
-    public function deleteBy($columnName, $value)
+    public function deleteBy(string $columnName, $value)
     {
         try {
             $stmt = $this->db->prepare("DELETE FROM {$this->table} WHERE $columnName = :$columnName");
@@ -109,7 +109,7 @@ class Model
         }
     }
 
-    public function updateById($id, $data)
+    public function updateById(int $id, array $data)
     {
         try {
             $sql = "UPDATE {$this->table} SET ";
@@ -140,7 +140,7 @@ class Model
         }
     }
 
-    public function updateBy($columnName, $value, $data)
+    public function updateBy(string $columnName, $value, array $data)
     {
         try {
             $sql = "UPDATE {$this->table} SET ";
@@ -170,7 +170,7 @@ class Model
         }
     }
 
-    public function searchBy($columnName, $search)
+    public function searchBy(string $columnName, string $search)
     {
         try {
             $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE $columnName LIKE :$columnName  LIMIT 8");

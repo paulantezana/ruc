@@ -8,7 +8,7 @@ class UserRole extends Model
         parent::__construct('user_role', 'user_role_id', $connection);
     }
 
-    public function insert($userRole, $userId)
+    public function insert(array $userRole, int $userId)
     {
         try {
             $currentDate = date('Y-m-d H:i:s');

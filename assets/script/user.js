@@ -40,11 +40,14 @@ function userList(page = 1, limit = 10, search = "") {
       `/user/table?limit=${limit}&page=${page}&search=${search}`,
       {
         method: "GET",
-      },
-      "text"
+      }
     )
       .then((res) => {
-        userTable.innerHTML = res;
+        if (res.success) {
+          userTable.innerHTML = res.view;
+        } else {
+          SnModal.error({ title: "Algo salió mal", content: res.message });
+        }
       })
       .finally((e) => {
         SnFreeze.unFreeze("#userTable");
@@ -270,9 +273,7 @@ function userGetById(userId) {
 function userToExcel() {
   let dataTable = document.getElementById("userCurrentTable");
   if (dataTable) {
-    window.open(
-      "data:application/vnd.ms-excel," + encodeURIComponent(dataTable.outerHTML)
-    );
+    TableToExcel(dataTable.outerHTML, 'Usuario', 'Usuario');
   }
 }
 

@@ -28,17 +28,7 @@ class HomeController extends Controller
     {
         $res = new Result();
         try {
-            $user = $this->userModel->getById($_SESSION[SESS_KEY]);
-
-            $res->result = [
-                'user' => [
-                    'userId' => $user['user_id'],
-                    'email' => $user['email'],
-                    'avatar' => $user['avatar'],
-                    'userName' => $user['user_name'],
-                    'userRole' => $user['user_role_id'],
-                ],
-            ];
+            
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();

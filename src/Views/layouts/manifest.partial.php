@@ -12,6 +12,6 @@
 <link rel="icon" type="image/png" sizes="96x96" href="<?= URL_PATH . '/assets/images/icon/Android/96.png' ?>">
 <link rel="icon" type="image/png" sizes="16x16" href="<?= URL_PATH . '/assets/images/icon/iOS/16.png' ?>">
 <link rel="manifest" href="<?= URL_PATH . '/assets/images/icon/manifest.json' ?>">
-<meta name="msapplication-TileColor" content="#D6303A">
+<meta name="msapplication-TileColor" content="#0170E3">
 <meta name="msapplication-TileImage" content="<?php echo '/assets/images/icon/iOS/144.png' ?>">
-<meta name="theme-color" content="#D6303A">
+<meta name="theme-color" content="#0170E3">

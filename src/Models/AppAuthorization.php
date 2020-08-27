@@ -7,7 +7,7 @@ class AppAuthorization extends Model
         parent::__construct("app_authorization", "app_authorization_id", $connection);
     }
 
-    public function getMenu($userRoleId)
+    public function getMenu(int $userRoleId)
     {
         try {
             $stmt = $this->db->prepare('SELECT app.module FROM user_role_authorization as ur
@@ -26,7 +26,7 @@ class AppAuthorization extends Model
         }
     }
 
-    public function getAllByuserRoleId($userRoleId)
+    public function getAllByuserRoleId(int $userRoleId)
     {
         try {
             $stmt = $this->db->prepare('SELECT * FROM user_role_authorization WHERE user_role_id = :user_role_id');
@@ -42,7 +42,7 @@ class AppAuthorization extends Model
         }
     }
 
-    public function save($authIds, $userRoleId, $userId)
+    public function save(array $authIds, int $userRoleId, int $userId)
     {
         try {
             $this->db->beginTransaction();
@@ -72,7 +72,7 @@ class AppAuthorization extends Model
         }
     }
 
-    public function isAuthorized($module, $action, $userRoleId)
+    public function isAuthorized(string $module, string $action, int $userRoleId)
     {
         try {
             $stmt = $this->db->prepare('SELECT count(*) as count FROM user_role_authorization as ur
@@ -87,9 +87,7 @@ class AppAuthorization extends Model
                 throw new Exception($stmt->errorInfo()[2]);
             }
 
-            if ($stmt->fetch()['count'] > 0) {
-                return $stmt->fetch();
-            }
+            return $stmt->fetch();
         } catch (Exception $e) {
             throw new Exception('Error en metodo : ' . __FUNCTION__ . ' | ' . $e->getMessage());
         }

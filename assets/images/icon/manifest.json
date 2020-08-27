@@ -1,7 +1,7 @@
 {
-  "short_name": "Buscaruc",
-  "name": "Buscaruc",
-  "description": "Busqueda de ruc sunat",
+  "short_name": "php-mvc",
+  "name": "php-mvc",
+  "description": "Plataformas de educación online",
   "icons": [
     {
       "src": "./Android/48.png",
@@ -29,8 +29,8 @@
       "type": "image/png"
     }
   ],
-  "start_url": "/buscaruc",
+  "start_url": "/",
   "display": "standalone",
-  "theme_color": "#D6303A",
-  "background_color": "#22303a"
+  "theme_color": "#0170E3",
+  "background_color": "#FAFAFA"
 }

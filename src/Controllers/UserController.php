@@ -34,6 +34,7 @@ class UserController extends Controller
 
     public function table()
     {
+        $res = new Result();
         try {
             authorization($this->connection, 'usuario', 'listar');
             $page = htmlspecialchars(isset($_GET['page']) ? $_GET['page'] : 1);
@@ -42,14 +43,14 @@ class UserController extends Controller
 
             $user = $this->userModel->paginate($page, $limit, $search);
 
-            $this->render('partials/userTable.php', [
+            $res->view = $this->render('partials/userTable.php', [
                 'user' => $user,
-            ]);
+            ], '', true);
+            $res->success = true;
         } catch (Exception $e) {
-            $this->render('500.view.php', [
-                'message' => $e->getMessage(),
-            ]);
+            $res->message = $e->getMessage();
         }
+        echo json_encode($res);
     }
 
     public function profile()

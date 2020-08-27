@@ -77,6 +77,9 @@ function userRoleSaveAuthorization() {
 document.addEventListener("DOMContentLoaded", () => {
   let userRoleId = document.getElementById("userRoleId");
   if (userRoleId) {
+    userRoleId.addEventListener('change',()=>{
+      userRoleLoadAuthorities(userRoleId.value, "");
+    })
     userRoleLoadAuthorities(userRoleId.value, "");
   }
 });

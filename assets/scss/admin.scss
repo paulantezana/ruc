@@ -21,7 +21,7 @@
 @include SnPagination();
 @include SnTable();
 @include SnSwitch();
-@include SnTooltip();
+// @include SnTooltip();
 @include SnTab();
 @include SnContainer();
 @include SnCollapse();
@@ -35,32 +35,3 @@
 @import 'layout/Header.scss';
 @import 'layout/HeaderMenu.scss';
 @import 'layout/SnToolbar.scss';
-
-
-
-.SnModal{
-    &-header{
-      background: var(--snColorDarker);
-      color: var(--snColorDarkInverse);
-      border-bottom: 4px solid var(--snColor1);
-    }
-    &-close{
-        i,
-        svg{
-            color: var(--snColorDarkInverse);
-        }
-    }
-}
-
-.CensusList{
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    li {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: .5rem 0;
-        border-bottom: 1px solid var(--snColorBorder);
-    }
-}

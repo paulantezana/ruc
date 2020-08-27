@@ -9,7 +9,7 @@
                     <div class="SnTab-title">Seguridad</div>
                 </div>
                 <div class="SnTab-content">
-                    <div class="SnGrid m-grid-2 SnMb-5">
+                    <div class="SnGrid col-gap m-grid-2 SnMb-5">
                         <div>
                             <strong>Perfil</strong>
                             <p>Su dirección de correo electrónico es su identidad en <?= APP_NAME ?> y se utiliza para iniciar sesión.</p>
@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="SnTab-content">
-                    <div class="SnGrid m-grid-2 SnMb-5">
+                    <div class="SnGrid col-gap m-grid-2 SnMb-5">
                         <div>
                             <strong>Password</strong>
                             <p>Cambiar su contraseña también restablecerá su clave</p>

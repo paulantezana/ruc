@@ -2,7 +2,7 @@
 
 class Controller
 {
-    protected function render($path, $parameter = [], $template = '', $return = false)
+    protected function render(string $path, array $parameter = [], string $template = '', bool $return = false)
     {
 
         $content = requireToVar(VIEW_PATH . '/' . $path, $parameter);
@@ -25,7 +25,7 @@ class Controller
         }
     }
 
-    protected function redirect($url = "")
+    protected function redirect(string $url = "")
     {
         header('Location: ' . URL_PATH . $url);
     }

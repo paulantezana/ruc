@@ -1,4 +1,4 @@
-<ul class="CensusList">
+<ul>
     <?php foreach ($parameter['censusFile'] as $row) : ?>
         <li>
             <div>FILE <?= $row['census_file_id'] ?></div>

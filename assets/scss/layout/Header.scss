@@ -1,9 +1,8 @@
 .Header{
     display: flex;
     justify-content: space-between;
-    background: var(--snColorDarker);
-    color: var(--snColor1Inverse);
-    border-bottom: 4px solid var(--snColor1);
+    background: var(--snColorBgAlt);
+    border-bottom: 1px solid var(--snColorBorder);
 }
 
 #AsideMenu-toggle{

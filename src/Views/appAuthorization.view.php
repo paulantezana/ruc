@@ -27,7 +27,7 @@
                                 <td><?= $row['action'] ?></td>
                                 <td><?= $row['description'] ?></td>
                                 <td>
-                                    <div class="SnSwitch">
+                                    <div class="SnSwitch" title="Autorizar">
                                         <input class="SnSwitch-control" type="checkbox" id="userRoleAuthState<?= $row['app_authorization_id'] ?>">
                                         <label class="SnSwitch-label" for="userRoleAuthState<?= $row['app_authorization_id'] ?>"></label>
                                     </div>

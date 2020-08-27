@@ -28,9 +28,7 @@ class PageController extends Controller
         $message = isset($_GET['message']) ? $_GET['message'] : '';
 
         if (strtolower($_SERVER['HTTP_ACCEPT']) === 'application/json') {
-            $res = new Result();
-            $res->message = $message === '' ? '404 not found' : $message;
-            echo json_encode($res);
+            http_response_code(404);
         } else {
             $this->render('404.view.php', [
                 'message' => $message
@@ -77,90 +75,90 @@ class PageController extends Controller
                 $this->render('login.view.php', [], 'layouts/basic.layout.php');
             }
         } catch (Exception $e) {
-            $this->render('500.php', [
+            $this->render('500.view.php', [
                 'message' => $e->getMessage(),
             ], 'layouts/basic.layout.php');
         }
     }
 
-    // public function register()
-    // {
-    //     try {
-    //         $message = '';
-    //         $messageType = '';
-    //         $error = [];
+    public function register()
+    {
+        try {
+            $message = '';
+            $messageType = '';
+            $error = [];
 
-    //         if (isset($_POST['commit'])) {
-    //             try {
-    //                 if (!isset($_POST['register'])) {
-    //                     throw new Exception('No se proporcionó ningun dato');
-    //                 }
+            if (isset($_POST['commit'])) {
+                try {
+                    if (!isset($_POST['register'])) {
+                        throw new Exception('No se proporcionó ningun dato');
+                    }
 
-    //                 $register = $_POST['register'];
+                    $register = $_POST['register'];
 
-    //                 $validate = $this->validateRegister($register);
-    //                 if (!$validate->success) {
-    //                     throw new Exception($validate->message);
-    //                 }
+                    $validate = $this->validateRegister($register);
+                    if (!$validate->success) {
+                        throw new Exception($validate->message);
+                    }
 
-    //                 $userName = htmlspecialchars($register['userName']);
-    //                 $email = htmlspecialchars($register['email']);
-    //                 $password = htmlspecialchars($register['password']);
-    //                 $fullName = htmlspecialchars($register['fullName']);
+                    $userName = htmlspecialchars($register['userName']);
+                    $email = htmlspecialchars($register['email']);
+                    $password = htmlspecialchars($register['password']);
+                    $fullName = htmlspecialchars($register['fullName']);
 
-    //                 $userId = $this->userModel->insert([
-    //                     'userName' => $userName,
-    //                     'email' => $email,
-    //                     'password' => $password,
-    //                     'fullName' => $fullName,
-    //                     'userRoleId' => 2,
-    //                 ], 0);
+                    $userId = $this->userModel->insert([
+                        'userName' => $userName,
+                        'email' => $email,
+                        'password' => $password,
+                        'fullName' => $fullName,
+                        'userRoleId' => 2,
+                    ], 0);
 
-    //                 $loginUser = $this->userModel->getById($userId);
-    //                 $responseApp = $this->initApp($loginUser);
-    //                 if (!$responseApp->success) {
-    //                     session_destroy();
-    //                     $this->render('403.view.php', [
-    //                         'message' => $responseApp->message,
-    //                     ]);
-    //                     return;
-    //                 }
+                    $loginUser = $this->userModel->getById($userId);
+                    $responseApp = $this->initApp($loginUser);
+                    if (!$responseApp->success) {
+                        session_destroy();
+                        $this->render('403.view.php', [
+                            'message' => $responseApp->message,
+                        ]);
+                        return;
+                    }
 
-    //                 $urlApp = HOST . URL_PATH . '/page/login';
-    //                 $resEmail = EmailManager::send(
-    //                     APP_EMAIL,
-    //                     $email,
-    //                     '¡🚀 Bienvenido a ' . APP_NAME . ' !',
-    //                     '<div>
-    //                         <h1>' . $fullName . ', bienvenido(a) a ' . APP_NAME . '. Acelera tu negocio</h1>
-    //                         <p>' . APP_DESCRIPTION . '</p>
-    //                         <a href="' . $urlApp . '">Ingresar al sistema</a>
-    //                     </div>'
-    //                 );
+                    $urlApp = HOST . URL_PATH . '/page/login';
+                    $resEmail = EmailManager::send(
+                        APP_EMAIL,
+                        $email,
+                        '¡🚀 Bienvenido a ' . APP_NAME . ' !',
+                        '<div>
+                            <h1>' . $fullName . ', bienvenido(a) a ' . APP_NAME . '. Acelera tu negocio</h1>
+                            <p>' . APP_DESCRIPTION . '</p>
+                            <a href="' . $urlApp . '">Ingresar al sistema</a>
+                        </div>'
+                    );
 
-    //                 if (!$resEmail->success) {
-    //                     throw new Exception($resEmail->message);
-    //                 }
+                    if (!$resEmail->success) {
+                        throw new Exception($resEmail->message);
+                    }
 
-    //                 $this->redirect('/');
-    //                 return;
-    //             } catch (Exception $e) {
-    //                 $message = $e->getMessage();
-    //                 $messageType = 'error';
-    //             }
-    //         }
+                    $this->redirect('/');
+                    return;
+                } catch (Exception $e) {
+                    $message = $e->getMessage();
+                    $messageType = 'error';
+                }
+            }
 
-    //         $this->render('register.view.php', [
-    //             'message' => $message,
-    //             'error' => $error,
-    //             'messageType' => $messageType,
-    //         ], 'layouts/basic.layout.php');
-    //     } catch (Exception $e) {
-    //         $this->render('500.view.php', [
-    //             'message' => $e->getMessage(),
-    //         ], 'layouts/basic.layout.php');
-    //     }
-    // }
+            $this->render('register.view.php', [
+                'message' => $message,
+                'error' => $error,
+                'messageType' => $messageType,
+            ], 'layouts/basic.layout.php');
+        } catch (Exception $e) {
+            $this->render('500.view.php', [
+                'message' => $e->getMessage(),
+            ], 'layouts/basic.layout.php');
+        }
+    }
 
     public function forgot()
     {
@@ -326,9 +324,10 @@ class PageController extends Controller
 
             // 1 day
             setcookie('admin_menu', json_encode($menu), time() + (86400000), '/');
-
+            
+            unset($user['password']);
             $_SESSION[SESS_KEY] = $user['user_id'];
-            $_SESSION[SESS_ROLE] = $user['user_role_id'];
+            $_SESSION[SESS_USER] = $user;
 
             $res->success = true;
         } catch (Exception $e) {
