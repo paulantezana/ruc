@@ -1,0 +1,24 @@
+@import "../node_modules/sedna/bin/sedna";
+@import "_postConfig";
+
+@include SnBase();
+@import "_base";
+
+@include SnBtn();
+@include SnAlert();
+@include SnCard();
+@include SnForm();
+@include SnControl();
+@include SnMargin();
+@include SnSwitch();
+
+@import "basic/Layout";
+@import "basic/Result";
+@import "basic/Branding";
+@import "basic/Login";
+
+
+.SnCard{
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.052);
+    border: none;
+}

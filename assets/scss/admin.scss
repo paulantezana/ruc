@@ -1,0 +1,66 @@
+@import "../node_modules/sedna/bin/sedna";
+@import "_postConfig";
+
+// Base
+@include SnBase();
+@import "_base";
+
+// Components
+@include SnMenu(s,'.HeaderMenu');
+@include SnBtn();
+@include SnAlert();
+@include SnCard();
+@include SnForm();
+@include SnControl();
+@include SnAvatar();
+@include SnGrid();
+@include SnLoading();
+@include SnMargin();
+@include SnModal();
+@include SnMessage();
+@include SnPagination();
+@include SnTable();
+@include SnSwitch();
+@include SnTooltip();
+@include SnTab();
+@include SnContainer();
+@include SnCollapse();
+//@include SnDivider();
+@include SnFreeze();
+@include SnEmpty();
+@include SnPadding();
+
+@import 'layout/Layout.scss';
+@import 'layout/AsideMenu.scss';
+@import 'layout/Header.scss';
+@import 'layout/HeaderMenu.scss';
+@import 'layout/SnToolbar.scss';
+
+
+
+.SnModal{
+    &-header{
+      background: var(--snColorDarker);
+      color: var(--snColorDarkInverse);
+      border-bottom: 4px solid var(--snColor1);
+    }
+    &-close{
+        i,
+        svg{
+            color: var(--snColorDarkInverse);
+        }
+    }
+}
+
+.CensusList{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: .5rem 0;
+        border-bottom: 1px solid var(--snColorBorder);
+    }
+}

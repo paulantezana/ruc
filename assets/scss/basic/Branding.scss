@@ -1,0 +1,23 @@
+.Branding{
+  align-self: flex-end;
+  margin: 0 0 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  &-header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--snColorText);
+  }
+  &-img{
+    margin-right: 8px;
+    height: 32px;
+  }
+  &-description{
+    text-align: center;
+    font-size: .75rem;
+    font-weight: normal;
+  }
+}

@@ -1,0 +1,233 @@
+$menuBorderColor: var(--snColorDark);
+$asideFooterHeight: 32px;
+
+// General styles
+.AsideMenu {
+  @extend %snList;
+  height: calc(100vh - #{$headerHeight + $asideFooterHeight});
+  background: var(--snColorDarker);
+  overflow-y: auto;
+  &-container {
+    background: var(--snColorDarker);
+    color: var(--snColorDarkInverse);
+  }
+  li {
+    position: relative;
+  }
+  ul {
+    @extend %snList;
+    background: var(--snColorDark);
+  }
+  a {
+    color: var(--snColorDarkInverse);
+    text-decoration: none;
+    display: inline-block;
+    width: 100%;
+    padding: 12px 30px 12px 20px;
+    .AsideMenu-icon {
+      margin-right: 16px;
+    }
+    .toggle {
+      position: absolute;
+      right: 0;
+      padding: 0 15px 0 8px;
+    }
+  }
+  & > li > a {
+    &:hover {
+      background: var(--snColor1);
+      color: white;
+    }
+  }
+  ul {
+    a {
+      padding: 10px 10px 10px 46px;
+      &:hover{
+        color: var(--snColor1Lighter);
+      }
+    }
+  }
+}
+
+// Menu Aside wrrapper
+.AsideMenu-is-show {
+  @include to(l) {
+    .AsideMenu {
+      &-wrapper {
+        background: rgba(black, .5);
+      }
+      &-container {
+        width: $asideWidth;
+      }
+    }
+  }
+}
+
+// Divider
+.AsideMenu {
+  &-divider {
+    padding: 10px 20px;
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 700;
+  }
+}
+
+//@mixin AsideMenuInLarge(){
+.AsideMenu {
+  ul {
+    display: none;
+    &.is-show{
+      display: block;
+    }
+  }
+}
+
+@mixin AsideMenuInSmall(){
+  @include from(l) {
+    .AsideMenu {
+      overflow-y: initial;
+      &-divider {
+        // border-bottom: 1px solid var(--snColorDark);
+        padding: 0;
+        font-size: 0;
+      }
+
+      // All Levels
+      li {
+        ul {
+          position: absolute;
+          top: 0;
+          left: 100%;
+          width: 220px;
+          display: none;
+          a {
+            padding: 10px 10px 10px 24px;
+            height: 49px;
+          }
+        }
+        &:hover {
+          > ul {
+            display: block;
+          }
+          > a > span {
+            display: block;
+            padding: 12px 30px 12px 20px;
+            height: 49px;
+          }
+          > a {
+            color: var(--snColor1Lighter);
+          }
+        }
+      }
+
+      // Fisrt level
+      > li {
+        > a {
+          padding: 12px 16px 12px 16px;
+          text-align: center;
+          > span {
+            position: absolute;
+            left: 100%;
+            top: 0;
+            text-align: left;
+            padding: 0 20px;
+            width: 220px;
+            background: var(--snColor1);
+            display: none;
+          }
+          .toggle {
+            display: none;
+          }
+          .AsideMenu-icon {
+            margin-right: 0;
+            // font-size: 14px;
+          }
+        }
+        &:hover{
+          > a {
+            background: var(--snColor1);
+            color: white;
+          }
+        }
+        > ul{
+          top: 100%;
+        }
+      }
+    }
+  }
+}
+
+.SnAdminL1.AsideMenu-is-show{
+  @include AsideMenuInSmall();
+}
+.SnAdminL2:not(.AsideMenu-is-show){
+  @include AsideMenuInSmall();
+}
+
+// ----------------------------------------------------------------------------
+// Aside Header
+.AsideHeader {
+  height: $headerHeight + 4px;
+  padding: 10px 20px;
+  border-bottom: 4px solid var(--snColor1);
+}
+
+// ----------------------------------------------------------------------------
+.AsideFooter{
+  height: $asideFooterHeight;
+  padding: 0 14px 0 14px;
+}
+
+// Branding
+.Branding {
+  height: 100%;
+  &-link {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    color: var(--snColorDarkInverse);
+    text-decoration: none;
+    img {
+      max-width: 34px;
+      margin-right: 16px;
+    }
+  }
+  &-name {
+    font-weight: 500;
+  }
+}
+
+// Layout
+@mixin AsideHeaderInSmall(){
+  @include from(l){
+    .AsideHeader {
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+    .Branding {
+      &-img {
+        margin: 0;
+      }
+      &-name {
+        display: none;
+      }
+    }
+  }
+}
+
+.SnAdminL1.AsideMenu-is-show{
+  @include AsideHeaderInSmall();
+}
+.SnAdminL2:not(.AsideMenu-is-show){
+  @include AsideHeaderInSmall();
+}
+
+.icon-down::before{
+  content: "\25BC";
+}
+
+.icon-up::before{
+  content: "\25B2";
+}
