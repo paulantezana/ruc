@@ -2,6 +2,7 @@
 
 require_once(MODEL_PATH . '/User.php');
 require_once(MODEL_PATH . '/UserForgot.php');
+require_once(MODEL_PATH . '/Census.php');
 require_once(MODEL_PATH . '/AppAuthorization.php');
 require_once(CERVICE_PATH . '/SendManager/EmailManager.php');
 
@@ -9,18 +10,71 @@ class PageController extends Controller
 {
     private $connection;
     private $userModel;
+    private $censusModel;
     private $userForgotModel;
 
     public function __construct(PDO $connection)
     {
         $this->connection = $connection;
         $this->userModel = new User($connection);
+        $this->censusModel = new Census($connection);
         $this->userForgotModel = new UserForgot($connection);
     }
 
     public function home()
     {
-        $this->redirect('/page/login');
+        try{
+            $this->render('home.view.php', [], 'layouts/site.layout.php');
+        } catch (Exception $e) {
+            $this->render('500.view.php', [
+                'message' => $e->getMessage(),
+            ], 'layouts/site.layout.php');
+        }
+    }
+
+    public function rucQuery(){
+        $res = new Result();
+        try {
+            $postData = file_get_contents('php://input');
+            $body = json_decode($postData, true);
+
+            if (($body['ruc'] ?? '') == '') {
+                throw  new Exception('Falta ingresar el ruc');
+            }
+            if (!RUCIsValid($body['ruc'])) {
+                throw  new Exception('Ruc invalido');
+            }
+            if (($body['googleKey'] ?? '') == '') {
+                throw  new Exception('No se especifico una clave');
+            }
+
+            $response = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='. GOOGLE_RE_SECRET_KEY . '&response=' . $body['googleKey'] );
+            $response = json_decode($response);
+            if($response->success == false){
+                throw  new Exception('Acceso incorrecto');
+            }
+
+            $census = $this->censusModel->queryByRuc($body['ruc']);
+            $res->view = $this->render('partials/censusByRuc.partial.php',[
+                'census' => $census,
+            ],'',true);
+            $res->message = 'Consulta exitosa';
+            $res->result = $response;
+            $res->success = true;
+        } catch (Exception $e) {
+            $res->message = $e->getMessage();
+        }
+        echo json_encode($res);
+    }
+
+    public function support()
+    {
+        $this->render('support.view.php', [], 'layouts/site.layout.php');
+    }
+
+    public function price()
+    {
+        $this->render('price.view.php', [], 'layouts/site.layout.php');
     }
 
     public function error404()
@@ -32,7 +86,7 @@ class PageController extends Controller
         } else {
             $this->render('404.view.php', [
                 'message' => $message
-            ], 'layouts/basic.layout.php');
+            ], 'layouts/site.layout.php');
         }
     }
 
@@ -59,7 +113,7 @@ class PageController extends Controller
                         session_destroy();
                         $this->render('403.view.php', [
                             'message' => $responseApp->message,
-                        ], 'layouts/basic.layout.php');
+                        ], 'layouts/site.layout.php');
                         return;
                     }
 
@@ -69,15 +123,15 @@ class PageController extends Controller
                     $this->render('login.view.php', [
                         'messageType' => 'error',
                         'message' => $e->getMessage(),
-                    ], 'layouts/basic.layout.php');
+                    ], 'layouts/site.layout.php');
                 }
             } else {
-                $this->render('login.view.php', [], 'layouts/basic.layout.php');
+                $this->render('login.view.php', [], 'layouts/site.layout.php');
             }
         } catch (Exception $e) {
             $this->render('500.view.php', [
                 'message' => $e->getMessage(),
-            ], 'layouts/basic.layout.php');
+            ], 'layouts/site.layout.php');
         }
     }
 
@@ -152,11 +206,11 @@ class PageController extends Controller
                 'message' => $message,
                 'error' => $error,
                 'messageType' => $messageType,
-            ], 'layouts/basic.layout.php');
+            ], 'layouts/site.layout.php');
         } catch (Exception $e) {
             $this->render('500.view.php', [
                 'message' => $e->getMessage(),
-            ], 'layouts/basic.layout.php');
+            ], 'layouts/site.layout.php');
         }
     }
 
@@ -213,11 +267,11 @@ class PageController extends Controller
             $this->render('forgot.view.php', [
                 'message' => $resView->message,
                 'messageType' => $resView->messageType,
-            ], 'layouts/basic.layout.php');
+            ], 'layouts/site.layout.php');
         } catch (Exception $e) {
             $this->render('500.view.php', [
                 'message' => $e->getMessage(),
-            ], 'layouts/basic.layout.php');
+            ], 'layouts/site.layout.php');
         }
     }
 
@@ -301,11 +355,11 @@ class PageController extends Controller
                 'messageType' => $resView->messageType,
                 'contentType' => $resView->contentType,
                 'user' => $user,
-            ], 'layouts/basic.layout.php');
+            ], 'layouts/site.layout.php');
         } catch (Exception $e) {
             $this->render('500.view.php', [
                 'message' => $e->getMessage(),
-            ], 'layouts/basic.layout.php');
+            ], 'layouts/site.layout.php');
         }
     }
 

@@ -29,12 +29,15 @@ define('MODEL_PATH', ROOT_DIR . '/src/Models');
 define('VIEW_PATH', ROOT_DIR . '/src/Views');
 define('CERVICE_PATH', ROOT_DIR . '/src/Services');
 
-define('SESS_KEY','SkyId');
-define('SESS_USER','SkyData');
+define('SESS_KEY','SnId');
+define('SESS_USER','SnUser');
 
-define('APP_NAME','PHP MVC');
+define('APP_NAME','RUC API');
 define('APP_AUTHOR','paulantezana');
-define('APP_DESCRIPTION','php mvc template');
+define('APP_DESCRIPTION','Servicio de api perú');
 define('APP_EMAIL','paulantezana.2@gmail.com');
 
 define('APP_DEV',false);
+
+define('GOOGLE_RE_KEY','6LfcgMQZAAAAALLDsxsVOzNJzzYJ3zNS1nnw0fYm');
+define('GOOGLE_RE_SECRET_KEY','6LfcgMQZAAAAANIo0O9NzC5bJyPowYVt9gQMyqyo');

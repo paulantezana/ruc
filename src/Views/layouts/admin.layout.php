@@ -44,7 +44,7 @@
                             </div>
                             <ul>
                                 <li class="User-item SnMt-2 SnMb-2">
-                                    <a href="<?= URL_PATH ?>/user/profile" class="SnAvatar">
+                                    <a href="<?= URL_PATH ?>/admin/user/profile" class="SnAvatar">
                                         <?php if($_SESSION[SESS_USER]['avatar'] !== ''): ?>
                                             <img class="SnAvatar-img" src="<?= URL_PATH ?><?= $_SESSION[SESS_USER]['avatar'] ?>" alt="avatar">
                                         <?php else: ?>
@@ -73,7 +73,7 @@
                 <div class="AsideMenu-container">
                     <div class="AsideHeader">
                         <div class="Branding">
-                            <a href="<?= URL_PATH ?>" class="Branding-link">
+                            <a href="<?= URL_PATH ?>/admin" class="Branding-link">
                                 <img src="<?= URL_PATH ?>/assets/images/icon/144.png" alt="Logo" class="Branding-img">
                                 <span class="Branding-name"><?= APP_NAME ?></span>
                             </a>
@@ -83,7 +83,12 @@
                         <li class="AsideMenu-divider">Principal</li>
                         <?php if (menuIsAuthorized('home')) : ?>
                             <li>
-                                <a href="<?= URL_PATH ?>/"><i class="fas fa-tachometer-alt AsideMenu-icon"></i><span>Inicio </span> </a>
+                                <a href="<?= URL_PATH ?>/admin"><i class="fas fa-tachometer-alt AsideMenu-icon"></i><span>Inicio </span> </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if (menuIsAuthorized('home')) : ?>
+                            <li>
+                                <a href="<?= URL_PATH ?>/admin/census"><i class="fas fa-barcode AsideMenu-icon"></i><span>Padron RUC </span> </a>
                             </li>
                         <?php endif; ?>
                         <li class="AsideMenu-divider">Configuracion</li>
@@ -92,10 +97,10 @@
                                 <a href="#"><i class="fas fa-toolbox AsideMenu-icon"></i><span>Mantenimiento</span></a>
                                 <ul>
                                     <?php if (menuIsAuthorized('usuario')) : ?>
-                                        <li><a href="<?= URL_PATH ?>/user"><i class="far fa-dot-circle SnMr-2"></i>Usuarios</a></li>
+                                        <li><a href="<?= URL_PATH ?>/admin/user"><i class="far fa-dot-circle SnMr-2"></i>Usuarios</a></li>
                                     <?php endif; ?>
                                     <?php if (menuIsAuthorized('rol')) : ?>
-                                        <li><a href="<?= URL_PATH ?>/appAuthorization"><i class="far fa-dot-circle SnMr-2"></i>Roles</a></li>
+                                        <li><a href="<?= URL_PATH ?>/admin/appAuthorization"><i class="far fa-dot-circle SnMr-2"></i>Roles</a></li>
                                     <?php endif; ?>
                                 </ul>
                             </li>

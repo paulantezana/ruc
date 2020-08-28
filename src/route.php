@@ -2,6 +2,7 @@
 
 class Router
 {
+    private $group;
     private $controller;
     private $method;
     private $param;
@@ -15,21 +16,27 @@ class Router
     {
         $url = explode('/', URL);
 
-        $this->method = !empty($url[2]) ? $url[2] : 'home';
-
-        if (isset($_SESSION[SESS_KEY])) {
-            $this->controller = !empty($url[1]) ? $url[1] : 'Home';
+        if(preg_match('/^\/admin/', URL)){
+            if(isset($_SESSION[SESS_KEY]) && isset($_SESSION[SESS_USER])){
+                $this->method = !empty($url[3]) ? $url[3] : 'home';
+                $this->controller = !empty($url[2]) ? $url[2] : 'Home';
+                $this->group = 'admin/';
+            } else {
+                $this->method = 'login';
+                $this->controller = 'Page';
+            }
         } else {
-            $this->controller = 'Page';
+            $this->method = !empty($url[2]) ? $url[2] : 'home';
+            $this->controller = !empty($url[1]) ? $url[1] : 'Page';
         }
 
         $this->controller = ucwords($this->controller) . 'Controller';
-        if (!is_file(CONTROLLER_PATH . "/{$this->controller}.php")) {
+        if (!is_file(CONTROLLER_PATH . "/{$this->group}{$this->controller}.php")) {
             $this->controller = 'PageController';
             $this->method = 'error404';
         }
 
-        require_once(CONTROLLER_PATH . "/{$this->controller}.php");
+        require_once(CONTROLLER_PATH . "/{$this->group}{$this->controller}.php");
         if (!method_exists($this->controller, $this->method)) {
             $this->controller = 'PageController';
             $this->method = 'error404';

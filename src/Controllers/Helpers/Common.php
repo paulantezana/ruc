@@ -89,3 +89,44 @@ function menuIsAuthorized($menuName)
         return false;
     }
 }
+
+function RUCIsValid($valor)
+{
+    $valor = trim($valor);
+    if ( $valor )
+    {
+        if ( strlen($valor) == 11 ) // RUC
+        {
+            $sum = 0;
+            $x = 6;
+            for ( $i=0; $i<strlen($valor)-1; $i++ )
+            {
+                if ( $i == 4 )
+                {
+                    $x = 8;
+                }
+                $digit = $valor[$i];
+                $x--;
+                if ( $i==0 )
+                {
+                    $sum += ($digit*$x);
+                }
+                else
+                {
+                    $sum += ($digit*$x);
+                }
+            }
+            $rest = $sum % 11;
+            $rest = 11 - $rest;
+            if ( $rest >= 10)
+            {
+                $rest = $rest - 10;
+            }
+            if ( $rest == $valor[strlen($valor)-1] )
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}

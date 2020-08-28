@@ -1,11 +1,34 @@
 <?php
-class Census
+class Census extends Model
 {
-    private $db;
-
-    public function __construct(PDO $db)
+    public function __construct(PDO $connection)
     {
-        $this->db = $db;
+        parent::__construct('census', 'ruc', $connection);
+    }
+
+    public function paginate(int $page, int $limit = 20, string $search = '')
+    {
+        try {
+            $offset = ($page - 1) * $limit;
+            $totalRows = $this->db->query('SELECT COUNT(*) FROM census WHERE ruc LIKE ' . "'%".$search."%'")->fetchColumn();
+            $totalPages = ceil($totalRows / $limit);
+
+            $stmt = $this->db->prepare("SELECT * FROM census WHERE ruc LIKE :ruc LIMIT $offset, $limit");
+            $stmt->bindValue(':ruc','%'.$search.'%');
+            if (!$stmt->execute()) {
+                throw new Exception($stmt->errorInfo()[2]);
+            }
+            $data = $stmt->fetchAll();
+
+            return [
+                'current' => $page,
+                'pages' => $totalPages,
+                'limit' => $limit,
+                'data' => $data,
+            ];
+        } catch (Exception $e) {
+            throw new Exception('Error en metodo : ' . __FUNCTION__ . ' | ' . $e->getMessage());
+        }
     }
 
     public function insert($census)
@@ -43,13 +66,9 @@ class Census
     public function queryByRuc($ruc)
     {
         try {
-            $stmt = $this->db->prepare('SELECT 
-                                                ruc, 
-                                                social_reason,
-                                                address,
-                                                state,
-                                                domicile_condition,
-                                                ubigeo
+            $stmt = $this->db->prepare('SELECT  ruc, social_reason, taxpayer_state, domicile_condition, ubigeo,
+                                        type_road, name_road, zone_code, type_zone, number, inside, lot, department,
+                                        kilometer, address, full_address, last_update_sunat
                                         FROM census
                                         WHERE ruc = :ruc');
             $stmt->bindParam(':ruc', $ruc);

@@ -22,11 +22,46 @@ class CensusController extends Controller
         $this->censusFileModel = new CensusFile($connection);
     }
 
+    public function home()
+    {
+        try {
+            $this->render('census.view.php',[], 'layouts/admin.layout.php');
+        } catch (Exception $e) {
+            $this->render('500.view.php', [
+                'message' => $e->getMessage(),
+            ], 'layouts/admin.layout.php');
+        }
+    }
+
+    public function table()
+    {
+        $res = new Result();
+        try {
+            // authorization($this->connection, 'usuario', 'listar');
+            $page = htmlspecialchars(isset($_GET['page']) ? $_GET['page'] : 1);
+            $limit = htmlspecialchars(isset($_GET['limit']) ? $_GET['limit'] : 10);
+            $search = htmlspecialchars(isset($_GET['search']) ? $_GET['search'] : '');
+
+            $census = $this->censusModel->paginate($page, $limit, $search);
+
+            $res->view = $this->render('partials/censusTable.partial.php', [
+                'census' => $census,
+            ], '', true);
+            $res->success = true;
+        } catch (Exception $e) {
+            $res->message = $e->getMessage();
+        }
+        echo json_encode($res);
+    }
+
     public function dowloand()
     {
         $res = new Result();
         try {
-            $resCen = $this->censusscraping->dowloand();
+            $postData = file_get_contents('php://input');
+            $body = json_decode($postData, true);
+
+            $resCen = $this->censusscraping->dowloand($body);
             if (!$resCen->success) {
                 throw new Exception($resCen->message);
             }
@@ -275,6 +310,38 @@ class CensusController extends Controller
             $res->success = true;
         } catch (Exception $e) {
             $this->connection->rollBack();
+            $res->message = $e->getMessage();
+        }
+        echo json_encode($res);
+    }
+
+    public function scandirWrapper(){
+        $res = new Result();
+        try {
+
+            $directory = scandir(ROOT_DIR . '/src/Services/Census/wrapper');
+
+            $res->view = $this->render('partials/finder.partial.php',[
+                'directory' => $directory,
+            ], '', true);
+            $res->success = true;
+        } catch (Exception $e) {
+            $res->message = $e->getMessage();
+        }
+        echo json_encode($res);
+    }
+
+    public function deleteFileWrapper(){
+        $res = new Result();
+        try {
+            $postData = file_get_contents('php://input');
+            $body = json_decode($postData, true);
+
+            unlink(ROOT_DIR . '/src/Services/Census/wrapper/' . $body['fileName']);
+
+            $res->message = 'Archivo elimnado';
+            $res->success = true;
+        } catch (Exception $e) {
             $res->message = $e->getMessage();
         }
         echo json_encode($res);

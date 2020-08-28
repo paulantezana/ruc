@@ -18,7 +18,7 @@ class CensusScraping
         $this->fileData = CENSUS_PATH . '/files.json';
     }
 
-    public function dowloand()
+    public function dowloand($param = [])
     {
         $res = new Result();
         try {
@@ -32,17 +32,20 @@ class CensusScraping
                 throw new Exception('Could not open: ' . $this->filePath);
             }
 
-            $options = array(
-                CURLOPT_FILE        => $filePath,
-                CURLOPT_TIMEOUT     => 28800, // set this to 8 hours so we dont timeout on big files
-                CURLOPT_URL         => $this->fileUrl,
-                // CURLOPT_USERAGENT   => '"Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.11) Gecko/20071204 Ubuntu/7.10 (gutsy) Firefox/2.0.0.11',
-                CURLOPT_SSL_VERIFYHOST => false,
-                CURLOPT_SSL_VERIFYPEER => false
-            );
-
             $curl = curl_init();
-            curl_setopt_array($curl, $options);
+            curl_setopt($curl, CURLOPT_FILE, $filePath);
+            curl_setopt($curl, CURLOPT_TIMEOUT, 28800);
+            curl_setopt($curl, CURLOPT_URL, $this->fileUrl);
+            if(isset($param['enabledAgent']) && $param['enabledAgent'] == true){
+                curl_setopt($curl, CURLOPT_USERAGENT, '"Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.11) Gecko/20071204 Ubuntu/7.10 (gutsy) Firefox/2.0.0.11');
+            }
+            if(isset($param['enabledVerifyHost'])){
+                curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, $param['enabledVerifyHost']);
+            }
+            if(isset($param['enabledVerfyPer'])){
+                curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $param['enabledVerfyPer']);
+            }
+            
             curl_exec($curl);
             if (curl_errno($curl)) {
                 throw new Exception(curl_error($curl));
