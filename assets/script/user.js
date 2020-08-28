@@ -37,7 +37,7 @@ function userList(page = 1, limit = 10, search = "") {
   if (userTable) {
     SnFreeze.freeze({ selector: "#userTable" });
     RequestApi.fetch(
-      `/user/table?limit=${limit}&page=${page}&search=${search}`,
+      `/admin/user/table?limit=${limit}&page=${page}&search=${search}`,
       {
         method: "GET",
       }
@@ -84,15 +84,10 @@ function userSubmit(e) {
   userSendData.state = document.getElementById("userState").checked || false;
   userSendData.userRoleId = document.getElementById("userUserRoleId").value;
 
-  if (userState.modalType === "create") {
-    url = "/user/create";
-  }
   if (userState.modalType === "update") {
-    url = "/user/update";
     userSendData.userId = document.getElementById("userId").value || 0;
   }
   if (userState.modalType === "updatePassword") {
-    url = "/user/updatePassword";
     userSendData = {
       password: document.getElementById("userPassword").value,
       passwordConfirm: document.getElementById("userPasswordConfirm").value,
@@ -100,7 +95,7 @@ function userSubmit(e) {
     };
   }
 
-  RequestApi.fetch(url, {
+  RequestApi.fetch('/admin/user/' . userState.modalType, {
     method: "POST",
     body: userSendData,
   })
@@ -127,7 +122,7 @@ function userDelete(userId, content = "") {
     cancelText: "No",
     onOk() {
       userSetLoading(true);
-      RequestApi.fetch("/user/delete", {
+      RequestApi.fetch("/admin/user/delete", {
         method: "POST",
         body: {
           userId: userId || 0,
@@ -244,7 +239,7 @@ function userGetById(userId) {
   userClearForm();
   userSetLoading(true);
 
-  RequestApi.fetch("/user/id", {
+  RequestApi.fetch("/admin/user/id", {
     method: "POST",
     body: {
       userId: userId || 0,

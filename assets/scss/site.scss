@@ -11,11 +11,16 @@
 @include SnControl();
 @include SnMargin();
 @include SnSwitch();
+@include SnMenu(l,'.SiteMenu');
+@include SnMessage();
+@include SnAvatar();
 
-@import "basic/Layout";
-@import "basic/Result";
-@import "basic/Branding";
-@import "basic/Login";
+$siteHeaderHeight: 56px;
+@import "site/SiteLayout";
+@import "site/Login";
+@import "site/Result";
+@import "site/SiteHeader";
+@import "site/SiteMenu";
 
 
 .SnCard{

@@ -6,7 +6,7 @@ function profileUpdateProfile(event) {
   userSendData.userName = document.getElementById("userUserName").value;
   userSendData.fullName = document.getElementById("userFullName").value;
 
-  RequestApi.fetch("/user/updateProfile", {
+  RequestApi.fetch("/admin/user/updateProfile", {
     method: "POST",
     body: userSendData,
   }).then((res) => {
@@ -27,7 +27,7 @@ function profileUpdatePassword(event) {
     "userPasswordConfirm"
   ).value;
 
-  RequestApi.fetch("/user/updatePassword", {
+  RequestApi.fetch("/admin/user/updatePassword", {
     method: "POST",
     body: userSendData,
   }).then((res) => {

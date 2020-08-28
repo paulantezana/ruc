@@ -1,0 +1,49 @@
+.SiteLayout{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: var(--skColorBgAlt);
+
+    &-header {
+        // Style
+        height: $siteHeaderHeight;
+        background: var(--snColorBgAlt);
+        // color: var(--snColorText);
+        border-bottom: 1px solid var(--snColorBorder);
+    }
+    &-footer{
+        margin-top: auto;
+    }
+    &-main{
+        // @include from(m){
+        //     $mCircleZise: 260px;
+        //     background: radial-gradient(var(--snColor1) 65%, transparent 65%) top #{($mCircleZise / 2)*-1} right #{($mCircleZise / 2)*-1} /#{$mCircleZise} #{$mCircleZise} no-repeat,
+        //                 radial-gradient(var(--snColor1) 65%, transparent 65%) bottom #{($mCircleZise / 2)*-1} left #{($mCircleZise / 2)*-1} /#{$mCircleZise} #{$mCircleZise} no-repeat;
+        //                 // radial-gradient(var(--snColor1Lighter4) 65%, transparent 65%) top top /250px 250px no-repeat;
+        // }
+        // @include from(l){
+        //     $mCircleZise: 300px;
+        //     background: radial-gradient(var(--snColor1) 65%, transparent 65%) top #{($mCircleZise / 2)*-1} right #{($mCircleZise / 2)*-1} /#{$mCircleZise} #{$mCircleZise} no-repeat,
+        //                 radial-gradient(var(--snColor1) 65%, transparent 65%) bottom #{($mCircleZise / 2)*-1} left #{($mCircleZise / 2)*-1} /#{$mCircleZise} #{$mCircleZise} no-repeat;
+        //                 // radial-gradient(var(--snColor1Lighter4) 65%, transparent 65%) top top /250px 250px no-repeat;
+        // }
+        // @include from(lg){
+        //     $mCircleZise: 320px;
+        //     background: radial-gradient(var(--snColor1) 65%, transparent 65%) top #{($mCircleZise / 2)*-1} right #{($mCircleZise / 2)*-1} /#{$mCircleZise} #{$mCircleZise} no-repeat,
+        //                 radial-gradient(var(--snColor1) 65%, transparent 65%) bottom #{($mCircleZise / 2)*-1} left #{($mCircleZise / 2)*-1} /#{$mCircleZise} #{$mCircleZise} no-repeat;
+        // }
+        .MainContainer{
+            max-width: $maxWidth;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 1rem;
+        }
+    }
+}
+
+.SiteWelcome{
+    margin-left: 1rem;
+    @include to(l){
+        display: none;
+    }
+}
