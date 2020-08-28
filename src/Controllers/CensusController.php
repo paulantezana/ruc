@@ -153,7 +153,7 @@ class CensusController extends Controller
             while (!feof($filePath)) {
                 $linea = fgets($filePath);
                 $dataRow = explode('|', utf8_encode($linea));
-                if(count($dataRow) <= 1){
+                if(count($dataRow) <= 10){
                     continue;
                 }
 

@@ -9,9 +9,11 @@ class Database
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
         ];
-        $this->connection = new PDO('mysql:host=localhost;dbname=paulpvad_ruc', 'paulpvad_paul', 'bvTLG.^Sp?VW', $options);
-        // $this->connection = new PDO('mysql:host=localhost;dbname=php_mvc', 'local_yoel', 'cascadesheet', $options);
-        // $this->connection = new PDO('mysql:host=localhost;dbname=ruc_2', 'root', '', $options);
+        if(APP_DEV){
+            $this->connection = new PDO('mysql:host=localhost;dbname=ruc_2', 'root', '', $options);
+        } else {
+            $this->connection = new PDO('mysql:host=localhost;dbname=paulpvad_ruc', 'paulpvad_paul', 'bvTLG.^Sp?VW', $options);
+        }
         $this->connection->exec("SET CHARACTER SET UTF8");
     }
     public function getConnection()

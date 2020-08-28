@@ -10,8 +10,11 @@ class CensusScraping
     public function __construct()
     {
         $this->filePath = CENSUS_PATH . '/census.zip';
-        // $this->fileUrl = 'http://www2.sunat.gob.pe/padron_reducido_ruc.zip';
-        $this->fileUrl = 'https://assets.paulantezana.com/padron_reducido_ruc.zip';
+        if(APP_DEV){
+            $this->fileUrl = 'https://assets.paulantezana.com/padron_reducido_ruc.zip';
+        } else {
+            $this->fileUrl = 'http://www2.sunat.gob.pe/padron_reducido_ruc.zip';
+        }
         $this->fileData = CENSUS_PATH . '/files.json';
     }
 
@@ -33,7 +36,7 @@ class CensusScraping
                 CURLOPT_FILE        => $filePath,
                 CURLOPT_TIMEOUT     => 28800, // set this to 8 hours so we dont timeout on big files
                 CURLOPT_URL         => $this->fileUrl,
-                CURLOPT_USERAGENT   => '"Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.11) Gecko/20071204 Ubuntu/7.10 (gutsy) Firefox/2.0.0.11',
+                // CURLOPT_USERAGENT   => '"Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.11) Gecko/20071204 Ubuntu/7.10 (gutsy) Firefox/2.0.0.11',
                 CURLOPT_SSL_VERIFYHOST => false,
                 CURLOPT_SSL_VERIFYPEER => false
             );
@@ -99,7 +102,14 @@ class CensusScraping
     }
 
     public function clear(){
-        deleteDir(CENSUS_PATH . '/files');
+        if(is_dir(CENSUS_PATH . '/files')){
+            $files = glob(CENSUS_PATH . '/files' . '/*.txt');
+            foreach($files as $file){
+                is_file(unlink($file));
+            }
+            rmdir(CENSUS_PATH . '/files');
+        }
+
         mkdir(CENSUS_PATH . '/files');
     }
 
@@ -126,22 +136,24 @@ class CensusScraping
             $currentFile = null;
 
             while (!feof($filePath)) {
-                if ($counter > 0) {
-                    $textLine = fgets($filePath);
-                    if ($counter % 120000 === 0 || $counter === 1) {
-                        $newFilePath = CENSUS_PATH . '/files/file' . ($fileCounter + 1) . '.txt';
+                $textLine = fgets($filePath);
+                if($counter === 0){
+                    $counter++;
+                    continue;
+                }
+                if ($counter % 120000 === 0 || $counter === 1) {
+                    $newFilePath = CENSUS_PATH . '/files/file' . ($fileCounter + 1) . '.txt';
 
-                        if (gettype($currentFile) === 'resource') {
-                            fclose($currentFile);
-                        }
-
-                        $currentFile =  fopen($newFilePath, 'a');
-                        array_push($files, $newFilePath);
-                        $fileCounter++;
+                    if (gettype($currentFile) === 'resource') {
+                        fclose($currentFile);
                     }
 
-                    fwrite($currentFile, $textLine);
+                    $currentFile =  fopen($newFilePath, 'a');
+                    array_push($files, $newFilePath);
+                    $fileCounter++;
                 }
+
+                fwrite($currentFile, $textLine);
                 $counter++;
             }
             fclose($filePath);

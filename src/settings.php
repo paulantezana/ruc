@@ -36,3 +36,5 @@ define('APP_NAME','PHP MVC');
 define('APP_AUTHOR','paulantezana');
 define('APP_DESCRIPTION','php mvc template');
 define('APP_EMAIL','paulantezana.2@gmail.com');
+
+define('APP_DEV',false);
