@@ -25,7 +25,18 @@
 }
 
 .SiteBranding{
-    img{
+    display: flex;
+    align-items: center;
+    color: var(--snColor1);
+    text-decoration: none;
+    &-img{
         height: 32px;
+        margin-right: .5rem;
+    }
+    &-name{
+        display: block;
+    }
+    &:hover{
+        // text-decoration: none;
     }
 }

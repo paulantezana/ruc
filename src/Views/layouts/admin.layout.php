@@ -65,44 +65,28 @@
                 </div>
             </header>
         </div>
-        <div class="AdminLayout-main">
-            <?php echo $content ?>
-        </div>
         <div class="AdminLayout-aside">
             <div id="AsideMenu-wrapper" class="AsideMenu-wrapper">
                 <div class="AsideMenu-container">
-                    <div class="AsideHeader">
-                        <div class="Branding">
-                            <a href="<?= URL_PATH ?>/admin" class="Branding-link">
-                                <img src="<?= URL_PATH ?>/assets/images/icon/144.png" alt="Logo" class="Branding-img">
-                                <span class="Branding-name"><?= APP_NAME ?></span>
-                            </a>
-                        </div>
-                    </div>
                     <ul class="AsideMenu" id="AsideMenu">
-                        <li class="AsideMenu-divider">Principal</li>
                         <?php if (menuIsAuthorized('home')) : ?>
                             <li>
-                                <a href="<?= URL_PATH ?>/admin"><i class="fas fa-tachometer-alt AsideMenu-icon"></i><span>Inicio </span> </a>
+                                <a href="<?= URL_PATH ?>/admin"><i class="fas fa-tachometer-alt AsideMenu-icon"></i><span>Inicio</span> </a>
                             </li>
                         <?php endif; ?>
                         <?php if (menuIsAuthorized('home')) : ?>
                             <li>
-                                <a href="<?= URL_PATH ?>/admin/census"><i class="fas fa-barcode AsideMenu-icon"></i><span>Padron RUC </span> </a>
+                                <a href="<?= URL_PATH ?>/admin/census"><i class="fas fa-barcode AsideMenu-icon"></i><span>Padron RUC</span> </a>
                             </li>
                         <?php endif; ?>
-                        <li class="AsideMenu-divider">Configuracion</li>
-                        <?php if (menuIsAuthorized(['usuario', 'rol'])) : ?>
+                        <?php if (menuIsAuthorized('usuario')) : ?>
                             <li>
-                                <a href="#"><i class="fas fa-toolbox AsideMenu-icon"></i><span>Mantenimiento</span></a>
-                                <ul>
-                                    <?php if (menuIsAuthorized('usuario')) : ?>
-                                        <li><a href="<?= URL_PATH ?>/admin/user"><i class="far fa-dot-circle SnMr-2"></i>Usuarios</a></li>
-                                    <?php endif; ?>
-                                    <?php if (menuIsAuthorized('rol')) : ?>
-                                        <li><a href="<?= URL_PATH ?>/admin/appAuthorization"><i class="far fa-dot-circle SnMr-2"></i>Roles</a></li>
-                                    <?php endif; ?>
-                                </ul>
+                                <a href="<?= URL_PATH ?>/admin/user"><i class="far fa-dot-circle AsideMenu-icon"></i><span>Usuarios</span></a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if (menuIsAuthorized('rol')) : ?>
+                            <li>
+                                <a href="<?= URL_PATH ?>/admin/appAuthorization"><i class="far fa-dot-circle AsideMenu-icon"></i><span>Roles</span></a>
                             </li>
                         <?php endif; ?>
                     </ul>
@@ -114,6 +98,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="AdminLayout-main">
+            <?php echo $content ?>
         </div>
     </div>
     <script src="<?= URL_PATH ?>/assets/script/adminLayout.js"></script>

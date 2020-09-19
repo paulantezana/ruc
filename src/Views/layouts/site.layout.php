@@ -27,11 +27,10 @@
         <div class="SiteLayout-header">
             <header class="SiteHeader">
                 <div class="SiteHeader-left">
-                    <div class="SiteBranding">
-                        <a href="<?= URL_PATH ?>/">
-                            <img src="<?= URL_PATH ?>/assets/images/icon/144.png" alt="logo">
-                        </a>
-                    </div>
+                    <a href="<?= URL_PATH ?>/" class="SiteBranding">
+                        <img src="<?= URL_PATH ?>/assets/images/icon/144.png" alt="logo" class="SiteBranding-img">
+                        <span class="SiteBranding-name"><?= APP_NAME ?></span>
+                    </a>
                 </div>
                 <div class="SiteHeader-right">
                     <div id="SiteMenu-toggle"><i class="fas fa-bars"></i></div>
@@ -46,6 +45,7 @@
                                 </div>
                             </div>
                             <ul class="SiteMenu" id="SiteMenu">
+                                <li itemprop="url"><a itemprop="name" title="Incio" href="<?= URL_PATH ?>/">Inicio</a></li>
                                 <li itemprop="url"><a itemprop="name" title="Precios" href="<?= URL_PATH ?>/page/price">Precios</a></li>
                                 <li itemprop="url"><a itemprop="name" title="Soporte" href="<?= URL_PATH ?>/page/support">Soporte</a></li>
                             </ul>

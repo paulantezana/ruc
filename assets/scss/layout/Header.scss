@@ -1,8 +1,11 @@
 .Header{
     display: flex;
     justify-content: space-between;
-    background: var(--snColorBgAlt);
-    border-bottom: 1px solid var(--snColorBorder);
+    // background: var(--snColorBgAlt);
+    // border-bottom: 1px solid var(--snColorBorder);
+    // @include from(l){
+    //     border-radius: 18px 0 0 0;
+    // }
 }
 
 #AsideMenu-toggle{

@@ -4,6 +4,8 @@
     min-height: 100vh;
     background: var(--skColorBgAlt);
 
+    background: url('../images/circle.svg') top 50% right -100% no-repeat;
+
     &-header {
         // Style
         height: $siteHeaderHeight;
@@ -29,8 +31,8 @@
         // }
         // @include from(lg){
         //     $mCircleZise: 320px;
-        //     background: radial-gradient(var(--snColor1) 65%, transparent 65%) top #{($mCircleZise / 2)*-1} right #{($mCircleZise / 2)*-1} /#{$mCircleZise} #{$mCircleZise} no-repeat,
-        //                 radial-gradient(var(--snColor1) 65%, transparent 65%) bottom #{($mCircleZise / 2)*-1} left #{($mCircleZise / 2)*-1} /#{$mCircleZise} #{$mCircleZise} no-repeat;
+            // background: radial-gradient(var(--snColor1) 65%, transparent 65%) top #{($mCircleZise / 2)*-1} right #{($mCircleZise / 2)*-1} /#{$mCircleZise} #{$mCircleZise} no-repeat,
+            //             radial-gradient(var(--snColor1) 65%, transparent 65%) bottom #{($mCircleZise / 2)*-1} left #{($mCircleZise / 2)*-1} /#{$mCircleZise} #{$mCircleZise} no-repeat;
         // }
         .MainContainer{
             max-width: $maxWidth;

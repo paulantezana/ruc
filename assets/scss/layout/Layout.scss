@@ -9,6 +9,7 @@ $headerHeight: 56px;
   grid-template-areas: "layoutHeader"
                         "layoutMain"
                         "layoutAside";
+  // background: var(--snColorDarker);
   @include from(l){
     grid-template-columns: 220px 1fr;
     grid-template-areas: "layoutAside layoutHeader"
@@ -22,6 +23,10 @@ $headerHeight: 56px;
     height: calc(100vh - #{$headerHeight + 1});
     overflow-y: auto;
     grid-area: layoutMain;
+    // background: var(--snColorBgAlt);
+    // @include from(l){
+    //   border-radius: 0 0 0 18px;
+    // }
   }
   &-aside{
     @include to(l){

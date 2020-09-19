@@ -16,14 +16,15 @@
 @include SnAvatar();
 
 $siteHeaderHeight: 56px;
-@import "site/SiteLayout";
-@import "site/Login";
-@import "site/Result";
-@import "site/SiteHeader";
-@import "site/SiteMenu";
+@import 'site/SiteLayout';
+@import 'site/Login';
+@import 'site/Result';
+@import 'site/SiteHeader';
+@import 'site/SiteMenu';
+@import 'site/Home';
 
 
-.SnCard{
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.052);
-    border: none;
-}
+// .SnCard{
+//     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.052);
+//     border: none;
+// }
