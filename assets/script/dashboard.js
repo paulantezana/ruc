@@ -70,7 +70,10 @@ function censusDowloand(element) {
             })
                 .then((res) => {
                     if (res.success) {
-                        SnMessage.success({ content: res.message });
+                        SnModal.success({
+                            title: "Operación correcta.",
+                            content: res.message,
+                        });
                     } else {
                         SnModal.error({
                             title: "Algo salió mal",
@@ -165,6 +168,13 @@ function censusSetAllData() {
             RequestApi.fetch("/admin/census/getFilesIsNotProcess")
                 .then((res) => {
                     if (res.success) {
+                        if(res.result.length===0){
+                            SnModal.warning({
+                                title: "ALERTA",
+                                content: 'No hay archivos que procesar.',
+                            });
+                            return;
+                        }
                         censusSetAllDataProcess(res.result);
                     } else {
                         SnModal.error({
@@ -197,9 +207,10 @@ async function censusSetAllDataProcess(dataResult) {
 
 function censusSetDataItem(censusFileId){
     SnFreeze.freeze({ selector: "#censusFilesWrapperContainer" });
+    let firstTime = document.getElementById('enabledFirstTime').checked;
     return RequestApi.fetch("/admin/census/setData", {
         method: "POST",
-        body: { censusFileId },
+        body: { censusFileId, firstTime },
     })
         .then((res) => {
             if (res.success) {
@@ -251,6 +262,32 @@ function censusClear(){
         onOk() {
             SnFreeze.freeze({ selector: "#censusFilesWrapperContainer" });
             RequestApi.fetch("/admin/census/clear")
+                .then((res) => {
+                    if (res.success) {
+                        SnMessage.success({ content: res.message });
+                    } else {
+                        SnModal.error({
+                            title: "Algo salió mal",
+                            content: res.message,
+                        });
+                    }
+                    censusGetFiles();
+                })
+                .finally((e) => {
+                    SnFreeze.unFreeze("#censusFilesWrapperContainer");
+                    scandirWrapper();
+                });
+        }
+    });
+}
+
+function censusTruncate(){
+    SnModal.confirm({
+        title: "Limpiar DB?",
+        content: "Esta acción limpiara la base de datos.",
+        onOk() {
+            SnFreeze.freeze({ selector: "#censusFilesWrapperContainer" });
+            RequestApi.fetch("/admin/census/truncate")
                 .then((res) => {
                     if (res.success) {
                         SnMessage.success({ content: res.message });

@@ -54,7 +54,7 @@
                 $res->success = true;
                 $res->result = [
                     'name' => $data[2],
-                    'mothersLastName' => $data[1],
+                    'motherLastName' => $data[1],
                     'lastName' => $data[0],
                     'documentNumber' => $dni,
                 ];

@@ -1,9 +1,7 @@
 // STYLES
 // Estilos generales
 .SiteMenu {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    @extend %snList;
     a {
         font-family: "Open Sans", sans-serif;
         display: block;
@@ -39,7 +37,7 @@
         &-header {
             padding: 12px 20px;
         }
-        &-footer{
+        &-footer {
             padding: 12px 20px;
             a {
                 width: 100%;
@@ -74,9 +72,9 @@
         &-header {
             display: none;
         }
-        &-footer{
+        &-footer {
             margin-left: 1rem;
-            .toRegister{
+            .toRegister {
                 margin-left: 8px;
             }
         }
@@ -91,8 +89,8 @@
         // Level 1
         & > li {
             & > a {
-                line-height: $siteHeaderHeight;
-                height: $siteHeaderHeight;
+                line-height: $headerHeight;
+                height: $headerHeight;
                 color: var(--snColorText);
                 &:hover {
                     color: var(--snColor1);
@@ -131,7 +129,7 @@
 #SiteMenu-toggle {
     font-size: 1.2rem;
     cursor: pointer;
-    height: $siteHeaderHeight;
+    height: $headerHeight;
     display: flex;
     justify-content: center;
     align-items: center;

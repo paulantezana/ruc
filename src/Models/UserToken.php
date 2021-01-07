@@ -8,6 +8,20 @@ class UserToken extends Model
         parent::__construct('user_tokens', 'user_token_id', $connection);
     }
 
+    public function getAllByUserId($userId)
+    {
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM user_tokens WHERE user_id = :user_id");
+            $stmt->bindParam(":user_id", $userId);
+            if (!$stmt->execute()) {
+                throw new Exception($stmt->errorInfo()[2]);
+            }
+            return $stmt->fetchAll();
+        } catch (Exception $e) {
+            throw new Exception('Error en metodo : ' . __FUNCTION__ . ' | ' . $e->getMessage());
+        }
+    }
+
     public function getByUserId($userId)
     {
         try {

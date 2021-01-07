@@ -18,8 +18,8 @@
         </div>
         <button type="submit" class="SnBtn block primary" name="commit">Login</button>
         <p style="text-align: center">
-            <span>¿No tienes una cuenta? <a href="<?= URL_PATH ?>/page/register"> Registrate ahora</a></span>
-            <a href="<?= URL_PATH ?>/page/forgot"> ¿Olvido su contraseña?</a>
+            <span>¿No tienes una cuenta? <a href="<?= URL_PATH ?>/user/register"> Registrate ahora</a></span>
+            <a href="<?= URL_PATH ?>/user/forgot"> ¿Olvido su contraseña?</a>
         </p>
     </form>
 </div>

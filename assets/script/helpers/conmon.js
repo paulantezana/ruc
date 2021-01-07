@@ -1,7 +1,3 @@
-const APP = {
-    path: "/ruc",
-};
-
 const codeMessage = {
     200: "El servidor devolvió con éxito los datos solicitados. ",
     201: "Datos nuevos o modificados son exitosos. ",
@@ -56,7 +52,7 @@ class RequestApi {
         NProgress.start();
         const newOptions = RequestApi.setHeaders(options);
 
-        return fetch(APP.path + path, newOptions)
+        return fetch(URL_PATH + path, newOptions)
             .then(RequestApi.checkStatus)
             .then((response) => {
               return response.json();

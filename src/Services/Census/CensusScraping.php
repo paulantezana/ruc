@@ -55,13 +55,18 @@ class CensusScraping
             curl_close($curl);
             fclose($filePath);
 
+            $fileSize = filesize($this->filePath);
+            if($fileSize > 0){
+                $fileSize = round(filesize($this->filePath) / 1048576,4);
+            }
+
             if ($statusCode != 200) {
                 throw new Exception('Curl status Code: ' . $statusCode);
             }
 
             $endTime = microtime(true);
 
-            $res->message = 'Downloaded success! At ' . ($endTime - $startTime) . ' seconds';
+            $res->message = 'Downloaded success! At ' . ($endTime - $startTime) . ' seconds, the file weighs (' .$fileSize . ' MB)';
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();

@@ -97,7 +97,20 @@ class CensusController extends Controller
             $this->censusscraping->clear();
             $this->censusFileModel->truncate();
 
-            $res->message = '';
+            $res->message = 'Los archivos divididos se eliminaron correctamente';
+            $res->success = true;
+        } catch (Exception $e) {
+            $res->message = $e->getMessage();
+        }
+        echo json_encode($res);
+    }
+
+    public function truncate(){
+        $res = new Result();
+        try {
+            $this->censusModel->truncate();
+
+            $res->message = 'La tabla census se limpió correctamente.';
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();
@@ -193,6 +206,7 @@ class CensusController extends Controller
             $startTime = microtime(true);
 
             $filePath = $body['censusFileId'];
+            $firstTime = $body['firstTime'];
 
             $censusFile = $this->censusFileModel->getById($body['censusFileId']);
 
@@ -259,7 +273,11 @@ class CensusController extends Controller
                 $entity['address'] .= $dataRow[12] != '-' ? 'DPTO. ' . $dataRow[12] : '';
                 $entity['address'] .= $dataRow[14] != '-' ? 'KM. ' . $dataRow[14] : '';
 
-                $this->censusModel->insert($entity);
+                if($firstTime){
+                    $this->censusModel->insert($entity);
+                } else {
+                    $this->censusModel->insertByRuc($entity);
+                }
             }
             fclose($filePath);
 

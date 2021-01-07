@@ -10,10 +10,13 @@
 
     <?php require_once(__DIR__ . '/manifest.partial.php') ?>
 
+    <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/prism.css">
     <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/site.css">
     <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/nprogress.css">
     <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/fontawesome.css">
 
+    <script>var URL_PATH = "<?= URL_PATH ?>"; </script>
+    <script src="<?= URL_PATH ?>/assets/script/helpers/prism.js"></script>
     <script src="<?= URL_PATH ?>/assets/script/helpers/sedna.js"></script>
     <script src="<?= URL_PATH ?>/assets/script/helpers/theme.js"></script>
     <script src="<?= URL_PATH ?>/assets/script/helpers/nprogress.js"></script>
@@ -45,14 +48,50 @@
                                 </div>
                             </div>
                             <ul class="SiteMenu" id="SiteMenu">
-                                <li itemprop="url"><a itemprop="name" title="Incio" href="<?= URL_PATH ?>/">Inicio</a></li>
-                                <li itemprop="url"><a itemprop="name" title="Precios" href="<?= URL_PATH ?>/page/price">Precios</a></li>
-                                <li itemprop="url"><a itemprop="name" title="Soporte" href="<?= URL_PATH ?>/page/support">Soporte</a></li>
+                                <li itemprop="url"><a itemprop="name" title="Inicio" href="<?= URL_PATH ?>/"><i class="fas fa-home SnMr-2"></i>Inicio</a></li>
+                                <li itemprop="url"><a itemprop="name" title="Precios" href="<?= URL_PATH ?>/page/price"><i class="fas fa-frog SnMr-2"></i>Precios</a></li>
+                                <?php if (isset($_SESSION[SESS_USER])) : ?>
+                                    <li itemprop="url"><a itemprop="name" title="Token" href="<?= URL_PATH ?>/page/token"><i class="fas fa-key SnMr-2"></i>Tokens</a></li>
+                                <?php endif; ?>
+                                <?php if (isset($_SESSION[SESS_USER])) : ?>
+                                    <li itemprop="url" class="SiteMenu-profile">
+                                        <div class="HeaderMenu-profile Header-action">
+                                            <div class="SnAvatar">
+                                                <?php if ($_SESSION[SESS_USER]['avatar'] !== '') : ?>
+                                                    <img class="SnAvatar-img" src="<?= URL_PATH ?><?= $_SESSION[SESS_USER]['avatar'] ?>" alt="avatar">
+                                                <?php else : ?>
+                                                    <div class="SnAvatar-text"><?= substr($_SESSION[SESS_USER]['user_name'], 0, 2); ?></div>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                        <ul>
+                                            <li class="User-item SnMt-2 SnMb-2">
+                                                <a href="<?= URL_PATH ?>/admin/user/profile" class="SnAvatar">
+                                                    <?php if ($_SESSION[SESS_USER]['avatar'] !== '') : ?>
+                                                        <img class="SnAvatar-img" src="<?= URL_PATH ?><?= $_SESSION[SESS_USER]['avatar'] ?>" alt="avatar">
+                                                    <?php else : ?>
+                                                        <div class="SnAvatar-text"><?= substr($_SESSION[SESS_USER]['user_name'], 0, 2); ?></div>
+                                                    <?php endif; ?>
+                                                </a>
+                                                <div>
+                                                    <div class="User-title"><strong id="userTitleInfo"><?= $_SESSION[SESS_USER]['email'] ?></strong></div>
+                                                    <div class="User-description" id="userDescriptionInfo"><?= $_SESSION[SESS_USER]['user_name'] ?></div>
+                                                </div>
+                                            </li>
+                                            <li class="divider"></li>
+                                            <li class="SnMt-2"><a href="<?= URL_PATH ?>/user/update"><i class="fas fa-user SnMr-2"></i>Perfil</a></li>
+                                            <?php if ($_SESSION[SESS_USER]['user_role_id'] == 2) : ?>
+                                                <li itemprop="url"><a itemprop="name" title="Token" href="<?= URL_PATH ?>/admin"><i class="fas fa-user-cog SnMr-2"></i>Administrador</a></li>
+                                            <?php endif; ?>
+                                            <li class="SnMb-2"><a href="<?= URL_PATH ?>/user/logout"><i class="fas fa-sign-out-alt SnMr-2"></i>Cerrar sesión</a></li>
+                                        </ul>
+                                    </li>
+                                <?php endif; ?>
                             </ul>
                             <div class="SiteMenu-footer">
                                 <?php if (!isset($_SESSION[SESS_KEY])) : ?>
-                                    <a itemprop="name" title="Registrarse" href="<?= URL_PATH ?>/page/register" class="SnBtn primary">Registrarse</a>
-                                    <a itemprop="name" title="Ingresar" href="<?= URL_PATH ?>/page/login" class="SnBtn">Ingresar</a>
+                                    <a itemprop="name" title="Registrarse" href="<?= URL_PATH ?>/user/register" class="SnBtn primary">Registrarse</a>
+                                    <a itemprop="name" title="Ingresar" href="<?= URL_PATH ?>/user/login" class="SnBtn">Ingresar</a>
                                 <?php endif; ?>
                             </div>
                         </div>

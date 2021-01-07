@@ -37,7 +37,7 @@ define('APP_AUTHOR','paulantezana');
 define('APP_DESCRIPTION','Servicio de api perú');
 define('APP_EMAIL','paulantezana.2@gmail.com');
 
-define('APP_DEV',true);
+define('APP_DEV',false);
 
 define('GOOGLE_RE_KEY','6LfcgMQZAAAAALLDsxsVOzNJzzYJ3zNS1nnw0fYm');
 define('GOOGLE_RE_SECRET_KEY','6LfcgMQZAAAAANIo0O9NzC5bJyPowYVt9gQMyqyo');

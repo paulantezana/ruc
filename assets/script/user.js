@@ -105,7 +105,7 @@ function userSubmit(e) {
     };
   }
 
-  RequestApi.fetch('/admin/user/' . userState.modalType, {
+  RequestApi.fetch('/admin/user/' + userState.modalType, {
     method: "POST",
     body: userSendData,
   })

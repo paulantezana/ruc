@@ -113,25 +113,29 @@ class Api1Controller extends Controller
             $this->userTokenModel->counterUp($userQuery['userTokenId'],$userQuery['userId']);
 
             $esalud = new EsaludDNI();
-            $response = $esalud->Query($dni);
-            if (!$response->success){
+            $responseEsalud = $esalud->query($dni);
+            if (!$responseEsalud->success){
                 $responseJne = JNE::query($dni);
                 if (!$responseJne->success){
                     throw new Exception($res->message);
                 }
 
                 $pearson = [
-                    'dni' => $response->result['documentNumber'],
-                    'social_reason' => $response->result['lastName'] . ' ' . $response->result['mothersLastName'] . ' ' . $response->result['name'],
-                    'birth_date' => '',
-                    'full_address' => '',
+                    'name' => $responseJne->result['name'],
+                    'motherLastName' => $responseJne->result['motherLastName'],
+                    'lastName' => $responseJne->result['lastName'],
+                    'documentNumber' => $responseJne->result['documentNumber'],
+                    'sex' => '',
+                    'birthDate' => '',
                 ];
             } else {
                 $pearson = [
-                    'dni' => $response->result['documentNumber'],
-                    'social_reason' => $response->result['socialReason'],
-                    'birth_date' => $response->result['birthDate'],
-                    'full_address' => '',
+                    'name' => $responseEsalud->result['name'],
+                    'motherLastName' => $responseEsalud->result['motherLastName'],
+                    'lastName' => $responseEsalud->result['lastName'],
+                    'documentNumber' => $responseEsalud->result['documentNumber'],
+                    'sex' => $responseEsalud->result['sex'],
+                    'birthDate' => $responseEsalud->result['birthDate'],
                 ];
             }
 
@@ -142,8 +146,6 @@ class Api1Controller extends Controller
             $res->message = $e->getMessage();
         }
         echo json_encode($res);
-
-        
     }
 
     private function validateToken($token){

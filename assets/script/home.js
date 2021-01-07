@@ -1,6 +1,7 @@
 function queryRucSubmit() {
     let query = {};
-    query.ruc = document.getElementById("ruc").value;
+    query.documentType = document.getElementById("documentType").value;
+    query.documentNumber = document.getElementById("documentNumber").value;
     query.googleKey = document.getElementById("googleKey").value;
 
     RequestApi.fetch("/page/rucQuery/", {

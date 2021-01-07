@@ -8,13 +8,12 @@
 
     &-header {
         // Style
-        height: $siteHeaderHeight;
-        background: var(--snColorBgAlt);
-        // color: var(--snColorText);
-        border-bottom: 1px solid var(--snColorBorder);
+        height: $headerHeight;
     }
     &-footer{
         margin-top: auto;
+        padding: 3rem 0 1rem 0;
+        text-align: center;
     }
     &-main{
         // @include from(m){

@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/nprogress.css">
     <link rel="stylesheet" href="<?= URL_PATH ?>/assets/css/fontawesome.css">
 
+    <script>var URL_PATH = "<?= URL_PATH ?>"; </script>
     <script src="<?= URL_PATH ?>/assets/script/helpers/sedna.js"></script>
     <script src="<?= URL_PATH ?>/assets/script/helpers/theme.js"></script>
     <script src="<?= URL_PATH ?>/assets/script/helpers/pristine.min.js"></script>
@@ -57,8 +58,9 @@
                                     </div>
                                 </li>
                                 <li class="divider"></li>
-                                <li class="SnMt-2"><a href="<?= URL_PATH ?>/user/profile"><i class="fas fa-user SnMr-2"></i>Perfil</a></li>
-                                <li class="SnMb-2"><a href="<?= URL_PATH ?>/page/logout"><i class="fas fa-sign-out-alt SnMr-2"></i>Cerrar sesión</a></li>
+                                <li class="SnMt-2"><a href="<?= URL_PATH ?>/user/update"><i class="fas fa-user SnMr-2"></i>Perfil</a></li>
+                                <li><a href="<?= URL_PATH ?>/"><i class="fas fa-globe-europe SnMr-2"></i>WEB</a></li>
+                                <li class="SnMb-2"><a href="<?= URL_PATH ?>/user/logout"><i class="fas fa-sign-out-alt SnMr-2"></i>Cerrar sesión</a></li>
                             </ul>
                         </li>
                     </ul>

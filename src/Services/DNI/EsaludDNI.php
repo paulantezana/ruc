@@ -10,13 +10,13 @@ class EsaludDNI
         $this->curl = curl_init();
     }
 
-    public function Query(string $dni)
+    public function query(string $dni)
     {
         $res = new Result();
         try{
-            if( strlen($dni)!=8 )
+            if(strlen($dni)!=8 )
             {
-                throw new Exception('EL RUC debe contener 8 dígitos');
+                throw new Exception('EL DNI debe contener 8 dígitos');
             }
             $options = [
                 CURLOPT_URL => "https://ww1.essalud.gob.pe/sisep/postulante/postulante/postulante_obtenerDatosPostulante.htm?strDni=" . $dni,
@@ -39,7 +39,9 @@ class EsaludDNI
 
             $res->success = true;
             $res->result = [
-                'socialReason' => $data['ApellidoPaterno'] . ' ' . $data['ApellidoMaterno'] . ' ' .  $data['Nombres'],
+                'name' => $data['Nombres'],
+                'motherLastName' => $data['ApellidoMaterno'],
+                'lastName' => $data['ApellidoPaterno'],
                 'documentNumber' => $dni,
                 'sex' => $data['ApellidoPaterno'],
                 'birthDate' => $data['FechaNacimiento'],

@@ -11,11 +11,17 @@
 @include SnControl();
 @include SnMargin();
 @include SnSwitch();
-@include SnMenu(l,'.SiteMenu');
+@include SnModal();
+@include SnMenu(s,'.SiteMenu');
 @include SnMessage();
 @include SnAvatar();
+@include SnTab();
+@include SnTable();
+@include SnDivider();
+@include SnEmpty();
+@include SnCollapse();
 
-$siteHeaderHeight: 56px;
+$headerHeight: 56px;
 @import 'site/SiteLayout';
 @import 'site/Login';
 @import 'site/Result';
@@ -23,8 +29,6 @@ $siteHeaderHeight: 56px;
 @import 'site/SiteMenu';
 @import 'site/Home';
 
+@import 'global/UserMenu.scss';
 
-// .SnCard{
-//     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.052);
-//     border: none;
-// }
+@import 'customSedna.scss';

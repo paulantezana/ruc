@@ -74,27 +74,3 @@
     }
   }
 }
-
-.User,
-.Notification {
-  &-item {
-    text-decoration: none;
-    color: var(--snColorText);
-    display: flex;
-    align-items: center;
-
-    line-height: 1rem;
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-    .SnAvatar {
-      margin-right: 16px;
-    }
-  }
-  &-description,
-  &-title {
-    margin: 0;
-  }
-  &-description {
-    color: var(--snColorTextAlt);
-  }
-}
