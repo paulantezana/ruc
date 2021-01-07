@@ -1,0 +1,19 @@
+.Console{
+    font-family: monospace;
+    list-style: none;
+    margin: 0;
+    background: var(--snColorDark);
+    color: #F8F8F2;
+    padding: 16px;
+    border-radius: 5px;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+    &-error{
+      color: #DC5370;
+    }
+    &-warning{
+      color: #FFB053;
+    }
+    &-success{
+      color: #A5E88D;
+    }
+}

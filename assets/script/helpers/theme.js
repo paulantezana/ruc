@@ -4,12 +4,12 @@
       darck: {
         snColorBg: "var(--snColorDark)",
         snColorBgAlt: "var(--snColorDarker)",
-        snColorHover: "var(--snColorDarkest)",
+        snColorHover: "var(--snColorDarkSmooth)",
 
-        snColorText: "var(--snColorDarkInverse)",
+        snColorText: "#b7bdc4",
         snColorTextAlt: "#94aab9",
 
-        snColorBorder: "var(--snColorDark)",
+        snColorBorder: "#343e4d",
       },
       light: {
         snColorBg: "#FAFAFA",

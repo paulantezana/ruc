@@ -106,7 +106,7 @@ class CensusScraping
 
     public function clear(){
         if(is_dir(CENSUS_PATH . '/files')){
-            $files = glob(CENSUS_PATH . '/files' . '/*.txt');
+            $files = glob(CENSUS_PATH . '/files' . '/*.*');
             foreach($files as $file){
                 is_file(unlink($file));
             }
@@ -116,7 +116,7 @@ class CensusScraping
         mkdir(CENSUS_PATH . '/files');
     }
 
-    public function splitFile()
+    public function splitFile($splitCount = 120000)
     {
         $res = new Result();
         try {
@@ -144,7 +144,7 @@ class CensusScraping
                     $counter++;
                     continue;
                 }
-                if ($counter % 120000 === 0 || $counter === 1) {
+                if ($counter % $splitCount === 0 || $counter === 1) {
                     $newFilePath = CENSUS_PATH . '/files/file' . ($fileCounter + 1) . '.txt';
 
                     if (gettype($currentFile) === 'resource') {
@@ -160,6 +160,128 @@ class CensusScraping
                 $counter++;
             }
             fclose($filePath);
+
+            $endTime = microtime(true);
+
+            $res->result = $files;
+            $res->message = 'Split success! At ' . ($endTime - $startTime) . ' seconds';
+            $res->success = true;
+        } catch (Exception $e) {
+            $res->message = $e->getMessage();
+        }
+        return $res;
+    }
+
+    // public function splitFileSql($splitCount = 9000, $splitCountRow = 400, $type = 'plain')
+    public function splitFileSql($splitCount = 5, $splitCountRow = 2, $type = 'plain')
+    {
+        // 9000
+        $res = new Result();
+        try {
+            $startTime = microtime(true);
+
+            $this->clear();
+
+            if (!is_file(CENSUS_PATH . '/padron_reducido_ruc.txt')) {
+                throw new Exception('The ' . $this->filePath . ' file was not found');
+            }
+
+            $filePath = fopen(CENSUS_PATH . '/padron_reducido_ruc.txt', 'r');
+            if ($filePath === false) {
+                throw new Exception('The txt file could not be opened');
+            }
+
+            $files = [];
+            $counter = 0;
+            $counterTxt = 0;
+            $fileCounter = 0;
+            $currentFile = null;
+            $sql = "INSERT  INTO census (ruc, social_reason, taxpayer_state, domicile_condition, ubigeo, type_road, name_road, zone_code, type_zone, number, inside, lot, department, kilometer, address, full_address, last_update_sunat) VALUES ";
+
+            while (!feof($filePath)) {
+                $textLine = fgets($filePath);
+                if($counter === 0){
+                    $counter++;
+                    continue;
+                }
+
+                $dataRow = explode('|', utf8_encode($textLine));
+                if(count($dataRow) <= 10){
+                    continue;
+                }
+
+                $entity = [];
+                $entity['ruc'] = $dataRow[0];
+                $entity['social_reason'] = $dataRow[1];
+                $entity['taxpayer_state'] = $dataRow[2];
+                $entity['domicile_condition'] = $dataRow[3];
+                $entity['ubigeo'] = $dataRow[4];
+                $entity['type_road'] = $dataRow[5];
+                $entity['name_road'] = $dataRow[6];
+                $entity['zone_code'] = $dataRow[7];
+                $entity['type_zone'] = $dataRow[8];
+                $entity['number'] = $dataRow[9];
+                $entity['inside'] = $dataRow[10];
+                $entity['lot'] = $dataRow[11];
+                $entity['department'] = $dataRow[12];
+                $entity['kilometer'] = $dataRow[13];
+                $entity['address'] = '';
+                $entity['full_address'] = '';
+                $entity['last_update_sunat'] = '';
+
+                $entity['address'] .= $dataRow[5] != '-' ? $dataRow[5] : '';
+                $entity['address'] .= $dataRow[6] != '-' ? $dataRow[6] : '';
+                $entity['address'] .= $dataRow[9] != '-' ? 'NRO. ' . $dataRow[9] : '';
+                $entity['address'] .= $dataRow[10] != '-' ? 'INT. ' . $dataRow[10] : '';
+                $entity['address'] .= $dataRow[11] != '-' ? 'LT. ' . $dataRow[11] : '';
+                $entity['address'] .= $dataRow[13] != '-' ? 'MZ. ' . $dataRow[13] : '';
+                $entity['address'] .= $dataRow[7] != '-' ? $dataRow[7] : '';
+                $entity['address'] .= $dataRow[8] != '-' ? $dataRow[8] : '';
+                $entity['address'] .= $dataRow[12] != '-' ? 'DPTO. ' . $dataRow[12] : '';
+                $entity['address'] .= $dataRow[14] != '-' ? 'KM. ' . $dataRow[14] : '';
+
+                if ((($counter + 1) % $splitCount) == 0) {
+                    $sql .= "('".addslashes($entity['ruc'])."','".addslashes($entity['social_reason'])."','".addslashes($entity['taxpayer_state'])."','".addslashes($entity['domicile_condition'])."','".addslashes($entity['ubigeo'])."','".addslashes($entity['type_road'])."','".addslashes($entity['name_road'])."','".addslashes($entity['zone_code'])."','".addslashes($entity['type_zone'])."','".addslashes($entity['number'])."','".addslashes($entity['inside'])."','".addslashes($entity['lot'])."','".addslashes($entity['department'])."','".addslashes($entity['kilometer'])."','".addslashes($entity['address'])."','".addslashes($entity['full_address'])."','".addslashes($entity['last_update_sunat'])."');";
+                    // $txt .= "(" . $datos[0] . ",'" . $rs . "','" . $direccion2 . "');";
+                } else {
+                    $sql .= "('".addslashes($entity['ruc'])."','".addslashes($entity['social_reason'])."','".addslashes($entity['taxpayer_state'])."','".addslashes($entity['domicile_condition'])."','".addslashes($entity['ubigeo'])."','".addslashes($entity['type_road'])."','".addslashes($entity['name_road'])."','".addslashes($entity['zone_code'])."','".addslashes($entity['type_zone'])."','".addslashes($entity['number'])."','".addslashes($entity['inside'])."','".addslashes($entity['lot'])."','".addslashes($entity['department'])."','".addslashes($entity['kilometer'])."','".addslashes($entity['address'])."','".addslashes($entity['full_address'])."','".addslashes($entity['last_update_sunat'])."'),";
+                    // $txt .= "(" . $datos[0] . ",'" . $rs . "','" . $direccion2 . "'),";
+                }
+
+                $counter++;
+                if (($counter % $splitCount) == 0) {
+                    $fileCounter++;
+                    if (($fileCounter % $splitCountRow) == 0) {
+                        $sql = substr($sql, 0, -1);
+                        $sql .= ";";
+                        $sql .= PHP_EOL;
+
+                        $newFilePath = CENSUS_PATH . '/files/file' . ($fileCounter + 1) . '.sql';
+
+                        $currentFile = fopen($newFilePath, "a");
+                        array_push($files, $newFilePath);
+                        
+                        fwrite($currentFile, $sql);
+                        fclose($currentFile);
+                        unset($sql);
+                        $sql = '';
+                    }
+                    $sql .= PHP_EOL;
+                    $sql = "INSERT  INTO census (ruc, social_reason, taxpayer_state, domicile_condition, ubigeo, type_road, name_road, zone_code, type_zone, number, inside, lot, department, kilometer, address, full_address, last_update_sunat) VALUES ";
+                }
+            }
+
+            $sql = substr($sql, 0, -1);
+            $sql .= ";";
+            $sql .= PHP_EOL;
+
+            $newFilePath = CENSUS_PATH . '/files/file_Main.sql';
+            $currentFile = fopen($newFilePath, "a");
+            array_push($files, $newFilePath);
+
+            fwrite($currentFile, $sql);
+            fclose($currentFile);
+            $sql = '';
 
             $endTime = microtime(true);
 

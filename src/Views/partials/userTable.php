@@ -41,6 +41,9 @@
                             <div class="SnBtn icon jsUserOption" title="Editar" onclick="userShowModalUpdate(<?= $row['user_id'] ?>)">
                                 <i class="fas fa-edit"></i>
                             </div>
+                            <div class="SnBtn icon jsUserOption" title="Clave" onclick="userShowModalApiToken(<?= $row['user_id'] ?>)">
+                                <i class="fab fa-quinscape"></i>
+                            </div>
                         </div>
                     </td>
                 </tr>

@@ -29,6 +29,10 @@
                         </div>
                         <div class="SnMb-5">
                             <div class="SnMb-2">Para aligerar el procesamiento de inserción a la base de datos divida el archivo en múltiples partes.</div>
+                            <div class="SnSwitch">
+                                <input class="SnSwitch-control" type="checkbox" id="enabledIsSql">
+                                <label class="SnSwitch-label" for="enabledIsSql">CURLOPT_SSL_VERIFYPEER</label>
+                            </div>
                             <button type="button" class="SnBtn primary jsAensusAction" onclick="censusPrepare(this)"><i class="fas fa-columns SnMr-2"></i>Dividir archivo</button>
                         </div>
                     </div>

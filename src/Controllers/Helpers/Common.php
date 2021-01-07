@@ -34,8 +34,8 @@ function authorization(PDO $connection, string $module, string $action, string $
         die();
     }
 
-    $stmt = $connection->prepare('SELECT count(*) as count FROM user_role_authorization as ur
-                            INNER JOIN app_authorization app ON ur.app_authorization_id = app.app_authorization_id
+    $stmt = $connection->prepare('SELECT count(*) as count FROM user_role_authorizations as ur
+                            INNER JOIN app_authorizations app ON ur.app_authorization_id = app.app_authorization_id
                             WHERE ur.user_role_id = :user_role_id AND app.module = :module AND app.action = :action
                             GROUP BY app.module');
     $stmt->execute([

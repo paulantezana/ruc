@@ -5,7 +5,7 @@ class UserForgot extends Model
 {
     public function __construct(PDO $db)
     {
-        parent::__construct("user_forgot", "user_forgot_id", $db);
+        parent::__construct("user_forgots", "user_forgot_id", $db);
     }
 
     public function insert(array $user, int $userId)
@@ -13,7 +13,7 @@ class UserForgot extends Model
         try {
             $currentDate = date('Y-m-d H:i:s');
 
-            $stmt = $this->db->prepare('INSERT INTO user_forgot (user_id, secret_key, used, created_at, created_user_id)
+            $stmt = $this->db->prepare('INSERT INTO user_forgots (user_id, secret_key, used, created_at, created_user_id)
                                                     VALUES (:user_id, :secret_key, :used, :created_at, :created_user_id)');
 
             $stmt->bindParam(':user_id', $user['userId']);
@@ -36,7 +36,7 @@ class UserForgot extends Model
     public function getBySecretKey(string $secretKey)
     {
         try {
-            $stmt = $this->db->prepare('SELECT user_forgot_id, user_id, secret_key, created_at FROM user_forgot WHERE secret_key = :secret_key AND used = 0 LIMIT 1');
+            $stmt = $this->db->prepare('SELECT user_forgot_id, user_id, secret_key, created_at FROM user_forgots WHERE secret_key = :secret_key AND used = 0 LIMIT 1');
             $stmt->bindParam(':secret_key', $secretKey);
 
             if (!$stmt->execute()) {

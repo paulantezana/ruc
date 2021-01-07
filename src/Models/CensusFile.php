@@ -4,12 +4,12 @@ class CensusFile extends Model
 
     public function __construct(PDO $connection)
     {
-        parent::__construct('census_file', 'census_file_id', $connection);
+        parent::__construct('census_files', 'census_file_id', $connection);
     }
 
     public function getAllIsNotProcess(){
         try {
-            $stmt = $this->db->prepare('SELECT * FROM census_file WHERE is_process = 0');
+            $stmt = $this->db->prepare('SELECT * FROM census_files WHERE is_process = 0');
             if (!$stmt->execute()) {
                 throw new Exception($stmt->errorInfo()[2]);
             }
@@ -22,7 +22,7 @@ class CensusFile extends Model
     public function truncate()
     {
         try {
-            $stmt = $this->db->prepare('TRUNCATE TABLE census_file');
+            $stmt = $this->db->prepare('TRUNCATE TABLE census_files');
 
             if (!$stmt->execute()) {
                 throw new Exception($stmt->errorInfo()[2]);
@@ -35,8 +35,9 @@ class CensusFile extends Model
     public function insert($census)
     {
         try {
-            $stmt = $this->db->prepare('INSERT INTO census_file (file_path) VALUES(:file_path)');
+            $stmt = $this->db->prepare('INSERT INTO census_files (file_path,file_type) VALUES(:file_path,:file_type)');
             $stmt->bindParam(':file_path', $census['filePath'], PDO::PARAM_STR_CHAR);
+            $stmt->bindParam(':file_type', $census['fileType'], PDO::PARAM_STR_CHAR);
 
             if (!$stmt->execute()) {
                 throw new Exception($stmt->errorInfo()[2]);

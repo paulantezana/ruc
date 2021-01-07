@@ -63,6 +63,29 @@ class Census extends Model
         }
     }
 
+    public function runSql($sql)
+    {
+        try {
+            $stmt = $this->db->prepare('ALTER TABLE `census` DROP PRIMARY KEY;');
+            if (!$stmt->execute()) {
+                throw new Exception($stmt->errorInfo()[2]);
+            }
+
+            // var_dump($sql);
+            $stmt = $this->db->prepare($sql);
+            if (!$stmt->execute()) {
+                throw new Exception($stmt->errorInfo()[2]);
+            }
+
+            $stmt = $this->db->prepare('ALTER TABLE census ADD PRIMARY KEY (ruc)');
+            if (!$stmt->execute()) {
+                throw new Exception($stmt->errorInfo()[2]);
+            }
+        } catch (Exception $e) {
+            throw new Exception('Line: ' . $e->getLine() . ' ' . $e->getMessage());
+        }
+    }
+
     public function queryByRuc($ruc)
     {
         try {

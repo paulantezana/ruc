@@ -1,5 +1,5 @@
 const APP = {
-    path: "",
+    path: "/ruc",
 };
 
 const codeMessage = {

@@ -5,6 +5,16 @@ let userState = {
 };
 let pValidator;
 
+document.addEventListener("DOMContentLoaded", () => {
+  pValidator = new Pristine(document.getElementById("userForm"));
+
+  document.getElementById("searchContent").addEventListener("input", (e) => {
+    userList(1, 10, e.target.value);
+  });
+
+  userList();
+});
+
 function userSetLoading(state) {
   userState.loading = state;
   let jsUserAction = document.querySelectorAll(".jsUserAction");
@@ -276,12 +286,28 @@ function userToPrint() {
   printArea("userCurrentTable");
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  pValidator = new Pristine(document.getElementById("userForm"));
+// TOKEN
+function userShowModalApiToken(userId){
+  RequestApi.fetch("/admin/user/apiSing", {
+    method: "POST",
+    body: {
+      userId: userId || 0,
+    },
+  })
+    .then((res) => {
+      if (res.success) {
+        document.getElementById('tokenUrl').innerHTML = res.path;
+        document.getElementById('tokenContainer').innerHTML = res.token;
+        SnModal.open('userApiTokenModalForm');
+      } else {
+        SnModal.error({ title: "Algo salió mal", content: res.message });
+      }
+    })
+    .finally((e) => {
+      userSetLoading(false);
+    });
 
-  document.getElementById("searchContent").addEventListener("input", (e) => {
-    userList(1, 10, e.target.value);
-  });
-
-  userList();
-});
+  // userState.modalType = "update";
+  // prepareModalUser(userState.modalType);
+  // userGetById(userId);
+}

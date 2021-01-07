@@ -113,13 +113,20 @@ function censusUnZip(element) {
 }
 
 function censusPrepare(element) {
+    
+    let option = {}
+    option.type = document.getElementById('enabledIsSql').checked ? 'sql' : 'plain';
+
     SnModal.confirm({
         title: "Esta seguro de preparar los datos?",
         content:
             "Esta acción dividirá en archivos independientes para optimizar la inserción en la base de datos.",
         onOk() {
             censusSetLoading(true, element);
-            RequestApi.fetch("/admin/census/prepare")
+            RequestApi.fetch("/admin/census/prepare",{
+                method: "POST",
+                body: option,
+            })
                 .then((res) => {
                     if (res.success) {
                         SnMessage.success({ content: res.message });
@@ -191,6 +198,30 @@ async function censusSetAllDataProcess(dataResult) {
 function censusSetDataItem(censusFileId){
     SnFreeze.freeze({ selector: "#censusFilesWrapperContainer" });
     return RequestApi.fetch("/admin/census/setData", {
+        method: "POST",
+        body: { censusFileId },
+    })
+        .then((res) => {
+            if (res.success) {
+                SnMessage.success({ content: res.message });
+            } else {
+                SnModal.error({
+                    title: "Algo salió mal",
+                    content: res.message,
+                });
+            }
+            censusGetFiles();
+            return res;
+        })
+        .finally((e) => {
+            SnFreeze.unFreeze("#censusFilesWrapperContainer");
+            scandirWrapper();
+        });
+}
+
+function setQuery(censusFileId){
+    SnFreeze.freeze({ selector: "#censusFilesWrapperContainer" });
+    return RequestApi.fetch("/admin/census/setQuery", {
         method: "POST",
         body: { censusFileId },
     })

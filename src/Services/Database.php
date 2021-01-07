@@ -10,7 +10,7 @@ class Database
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
         ];
         if(APP_DEV){
-            $this->connection = new PDO('mysql:host=localhost;dbname=ruc', 'root', '', $options);
+            $this->connection = new PDO('mysql:host=localhost;dbname=buscaruc', 'root', '', $options);
         } else {
             $this->connection = new PDO('mysql:host=localhost;dbname=paulpvad_ruc', 'paulpvad_paul', 'bvTLG.^Sp?VW', $options);
         }

@@ -110,7 +110,23 @@ class CensusController extends Controller
         $res = new Result();
         $this->connection->beginTransaction();
         try {
-            $resCen = $this->censusscraping->splitFile();
+            $postData = file_get_contents('php://input');
+            $body = json_decode($postData, true);
+
+            if(!isset($body['type'])){
+                $body['type'] = 'plain';
+            }
+            
+            if(empty($body['type'])){
+                $body['type'] = 'plain';
+            }
+
+            if($body['type'] == 'sql'){
+                $resCen = $this->censusscraping->splitFileSql();
+            } else {
+                $resCen = $this->censusscraping->splitFile();
+            }
+
             if (!$resCen->success) {
                 throw new Exception($resCen->message);
             }
@@ -119,7 +135,10 @@ class CensusController extends Controller
 
             $this->censusFileModel->truncate();
             foreach ($filePaths as $fileRow) {
-                $this->censusFileModel->insert(['filePath' => $fileRow]);
+                $this->censusFileModel->insert([
+                    'filePath' => $fileRow,
+                    'fileType' => $body['type']
+                ]);
             }
 
             $this->connection->commit();
@@ -254,6 +273,47 @@ class CensusController extends Controller
             $res->success = true;
         } catch (Exception $e) {
             $this->connection->rollBack();
+            $res->message = $e->getMessage();
+        }
+        echo json_encode($res);
+    }
+
+    public function setQuery()
+    {
+        $res = new Result();
+        try {
+            $postData = file_get_contents('php://input');
+            $body = json_decode($postData, true);
+            $startTime = microtime(true);
+
+            $filePath = $body['censusFileId'];
+
+            $censusFile = $this->censusFileModel->getById($body['censusFileId']);
+
+            $filePath = $censusFile['file_path'];
+            if (!is_file($filePath)) {
+                throw new Exception('File not found');
+            }
+
+            ini_set('max_execution_time', 2000);
+
+            $filePath = fopen($filePath, 'r');
+            while (!feof($filePath)) {
+                $linea = fgets($filePath);
+                $this->censusModel->runSql($linea);
+            }
+            fclose($filePath);
+
+            $this->censusFileModel->updateById($body['censusFileId'], [
+                'is_process' => true,
+            ]);
+            $endTime = microtime(true);
+
+            // $this->connection->commit();
+            $res->message = 'El proceso terminó exitosamente en ' . ($endTime - $startTime) . ' seconds';
+            $res->success = true;
+        } catch (Exception $e) {
+            // $this->connection->rollBack();
             $res->message = $e->getMessage();
         }
         echo json_encode($res);

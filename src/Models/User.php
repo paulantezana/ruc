@@ -15,7 +15,7 @@ class User extends Model
             $totalPages = ceil($totalRows / $limit);
 
             $stmt = $this->db->prepare("SELECT users.*, ur.description as user_role FROM users
-                                        INNER JOIN user_role ur on users.user_role_id = ur.user_role_id
+                                        INNER JOIN user_roles ur on users.user_role_id = ur.user_role_id
                                         WHERE users.user_name LIKE :search LIMIT $offset, $limit");
             $stmt->bindValue(':search', '%' . $search . '%');
 

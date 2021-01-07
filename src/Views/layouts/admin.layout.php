@@ -81,12 +81,12 @@
                         <?php endif; ?>
                         <?php if (menuIsAuthorized('usuario')) : ?>
                             <li>
-                                <a href="<?= URL_PATH ?>/admin/user"><i class="far fa-dot-circle AsideMenu-icon"></i><span>Usuarios</span></a>
+                                <a href="<?= URL_PATH ?>/admin/user"><i class="fas fa-user AsideMenu-icon"></i><span>Usuarios</span></a>
                             </li>
                         <?php endif; ?>
                         <?php if (menuIsAuthorized('rol')) : ?>
                             <li>
-                                <a href="<?= URL_PATH ?>/admin/appAuthorization"><i class="far fa-dot-circle AsideMenu-icon"></i><span>Roles</span></a>
+                                <a href="<?= URL_PATH ?>/admin/appAuthorization"><i class="fas fa-user-tag AsideMenu-icon"></i><span>Roles</span></a>
                             </li>
                         <?php endif; ?>
                     </ul>

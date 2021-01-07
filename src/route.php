@@ -22,9 +22,19 @@ class Router
                 $this->controller = !empty($url[2]) ? $url[2] : 'Home';
                 $this->group = 'admin/';
             } else {
-                $this->method = 'login';
-                $this->controller = 'Page';
+                if (strtolower($_SERVER['HTTP_ACCEPT']) == 'application/json') {
+                    http_response_code(403);
+                    die();
+                } else {
+                    $this->method = 'login';
+                    $this->controller = 'User';
+                }
             }
+        } else if (preg_match('/^\/api\/v1/', URL)){
+            $url = '/' . trim(preg_replace('/^\/api\/v1/', '', URL), '/');
+            $this->group = 'api/';
+            $this->controller = 'Api1';
+            $this->method = trim($url, '/');
         } else {
             $this->method = !empty($url[2]) ? $url[2] : 'home';
             $this->controller = !empty($url[1]) ? $url[1] : 'Page';
@@ -32,6 +42,7 @@ class Router
 
         $this->controller = ucwords($this->controller) . 'Controller';
         if (!is_file(CONTROLLER_PATH . "/{$this->group}{$this->controller}.php")) {
+            $this->group = '';
             $this->controller = 'PageController';
             $this->method = 'error404';
         }

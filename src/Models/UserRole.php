@@ -5,7 +5,7 @@ class UserRole extends Model
 {
     public function __construct(PDO $connection)
     {
-        parent::__construct('user_role', 'user_role_id', $connection);
+        parent::__construct('user_roles', 'user_role_id', $connection);
     }
 
     public function insert(array $userRole, int $userId)
@@ -13,7 +13,7 @@ class UserRole extends Model
         try {
             $currentDate = date('Y-m-d H:i:s');
 
-            $stmt = $this->db->prepare('INSERT INTO user_role (description, created_at, created_user_id, state)
+            $stmt = $this->db->prepare('INSERT INTO user_roles (description, created_at, created_user_id, state)
                                                     VALUES (:description, :created_at, :created_user_id, :state)');
 
             $stmt->bindParam(':description', $userRole['description']);

@@ -137,6 +137,7 @@ $asideFooterHeight: 32px;
             border-radius: 5px;
             white-space: nowrap;
             display: none;
+            z-index: 10;
           }
           .toggle {
             display: none;

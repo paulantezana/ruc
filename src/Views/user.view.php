@@ -97,3 +97,16 @@
         </div>
     </div>
 </div>
+
+<div class="SnModal-wrapper" data-modal="userApiTokenModalForm">
+    <div class="SnModal" style="max-width: 800px;">
+        <div class="SnModal-close" data-modalclose="userApiTokenModalForm">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="SnModal-header"><i class="fas fa-folder-plus SnMr-2"></i> Usuario</div>
+        <div class="SnModal-body">
+            <div class="SnAlert success SnMb-2" id="tokenUrl"><?= HOST . URL_PATH ?>/api/v2</div>
+            <div id="tokenContainer" class="Console" style="overflow: auto; margin-bottom: 16px; font-size: 17px"></div>
+        </div>
+    </div>
+</div>
