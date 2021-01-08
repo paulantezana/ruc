@@ -1,17 +1,21 @@
 <?php
 date_default_timezone_set('America/Lima');
 
-function exceptions_error_handler($severity, $message, $filename, $lineno)
-{
-  error_log($severity. $message. $filename. $lineno . PHP_EOL, 3,  __DIR__ . '/../files/errors.log');
-  if (error_reporting() == 0) {
-    return;
-  }
-  if (error_reporting() & $severity) {
-    throw new ErrorException($message, 0, $severity, $filename, $lineno);
-  }
-}
-set_error_handler('exceptions_error_handler');
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// function exceptions_error_handler($severity, $message, $filename, $lineno)
+// {
+//   error_log($severity. $message. $filename. $lineno . PHP_EOL, 3,  __DIR__ . '/../files/errors.log');
+//   if (error_reporting() == 0) {
+//     return;
+//   }
+//   if (error_reporting() & $severity) {
+//     throw new ErrorException($message, 0, $severity, $filename, $lineno);
+//   }
+// }
+// set_error_handler('exceptions_error_handler');
 
 $scriptName = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
 $requestUri = parse_url('http://example.com' . $_SERVER['REQUEST_URI'], PHP_URL_PATH);
