@@ -9,11 +9,13 @@ class UserController extends Controller
 {
     private $connection;
     private $userModel;
+    private $userForgotModel;
 
     public function __construct(PDO $connection)
     {
         $this->connection = $connection;
         $this->userModel = new User($connection);
+        $this->userForgotModel = new UserForgot($connection);
     }
 
     public function login()
@@ -91,7 +93,7 @@ class UserController extends Controller
                         'email' => $email,
                         'password' => $password,
                         'fullName' => $fullName,
-                        'userRoleId' => 2,
+                        'userRoleId' => 1,
                     ], 0);
 
                     $loginUser = $this->userModel->getById($userId);
