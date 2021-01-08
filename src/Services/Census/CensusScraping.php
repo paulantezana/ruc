@@ -1,5 +1,6 @@
 <?php
-require_once(__DIR__ . '/util.php');
+
+define('CENSUS_PATH', str_replace('\\', '/', __DIR__ . '/wrapper'));
 
 class CensusScraping
 {
@@ -9,6 +10,10 @@ class CensusScraping
 
     public function __construct()
     {
+        if (!file_exists(CENSUS_PATH)) {
+            mkdir(CENSUS_PATH);
+        }
+
         $this->filePath = CENSUS_PATH . '/census.zip';
         if(APP_DEV){
             $this->fileUrl = 'https://assets.paulantezana.com/padron_reducido_ruc.zip';
