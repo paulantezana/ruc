@@ -18,9 +18,15 @@ class Router
 
         if(preg_match('/^\/admin/', URL)){
             if(isset($_SESSION[SESS_KEY]) && isset($_SESSION[SESS_USER])){
-                $this->method = !empty($url[3]) ? $url[3] : 'home';
-                $this->controller = !empty($url[2]) ? $url[2] : 'Home';
-                $this->group = 'admin/';
+                if($_SESSION[SESS_USER]['user_role_id'] != '1'){
+                    $this->method = !empty($url[3]) ? $url[3] : 'home';
+                    $this->controller = !empty($url[2]) ? $url[2] : 'Home';
+                    $this->group = 'admin/';
+                } else {
+                    $this->group = '';
+                    $this->controller = 'Page';
+                    $this->method = 'error403';
+                }
             } else {
                 if (strtolower($_SERVER['HTTP_ACCEPT']) == 'application/json') {
                     http_response_code(403);

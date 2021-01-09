@@ -152,6 +152,28 @@ class Api1Controller extends Controller
         if (empty($token)){
             throw new Exception("No se encontró ningún token de autenticación.");
         }
-        return ApiSign::decode($token);
+
+        // Validate token
+        $userDecode = ApiSign::decode($token);
+        $userToken = $this->userTokenModel->getTariffById($userDecode['userTokenId']);
+        if($userToken === false){
+            throw new Exception("Token no registrado en el sistema.");
+        }
+        
+        // Sies es un -1, Sin limíte de consultas
+        if(intval($userToken['max_query_count']) != -1){
+            if(intval($userToken['query_count']) >= intval($userToken['max_query_count'])){
+                throw new Exception("Llego al limite de consulta, ".$userToken['query_count']." de ".$userToken['max_query_count']." consultas.");
+            }
+        }
+
+        // Fecha de expiracion
+        $currentDate = date('Y-m-d');
+        $expireDate = date('Y-m-d', strtotime("+".$userToken['months_of_hiring']." months", strtotime($userToken['start_date'])));
+        if(stringDateDiff($currentDate, $expireDate)<=0){
+            throw new Exception("El token llegó a la fecha de expiración.");
+        }
+
+        return $userDecode;
     }
 }

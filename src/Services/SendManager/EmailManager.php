@@ -23,7 +23,14 @@ class EmailManager
 
             // HTML MESSAGE START
             $message = HtmlTemplate::layout($message);
-            $res->success = mail($to, $subject, $message, $headers);
+            $sendSuccess = mail($to, $subject, $message, $headers);
+            if($sendSuccess){
+                $res->success = true;
+                $res->message = 'El correo se envió exitosamente.';
+            } else {
+                $res->success = false;
+                $res->message = 'No se pudo enviar el correo electrónico.';
+            }
         } catch (Exception $e) {
             $res->success = false;
             $res->message = $e->getMessage();

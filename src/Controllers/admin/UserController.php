@@ -230,28 +230,11 @@ class UserController extends Controller
             $body = json_decode($postData, true);
 
             $userId = $body['userId'];
-
             $userTokenModel = new UserToken($this->connection);
-            $userToken = $userTokenModel->getByUserId($userId);
-            if($userToken == false){
-                $userToken['user_token_id'] = $userTokenModel->insert([
-                    'apiToken' => '',
-                    'userId' => $userId,
-                ],$_SESSION[SESS_KEY]);
-            }
-            
-            $payload = [
-                'userId' => $userId,
-                'userTokenId' => $userToken['user_token_id'],
-            ];
+            $sign = userTokenSign($userTokenModel, $userId, $_SESSION[SESS_KEY]);
 
-            $token = ApiSign::encode($payload);
-            $userTokenModel->updateById($userId,[
-                'api_token' => $token
-            ]);
-
-            $res->path = HOST . URL_PATH . '/api/v1?token=YOUR_TOKEN';
-            $res->token = $token;
+            $res->path = HOST . URL_PATH . '/api/v1';
+            $res->token = $sign['token'];
             $res->success = true;
             $res->message = 'El registro se eliminó exitosamente';
         } catch (Exception $e) {

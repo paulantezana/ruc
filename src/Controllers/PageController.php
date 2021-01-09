@@ -4,7 +4,6 @@ require_once(MODEL_PATH . '/UserToken.php');
 require_once(MODEL_PATH . '/User.php');
 require_once(MODEL_PATH . '/UserForgot.php');
 require_once(MODEL_PATH . '/Census.php');
-require_once(MODEL_PATH . '/AppAuthorization.php');
 require_once(CERVICE_PATH . '/SendManager/EmailManager.php');
 require_once(CERVICE_PATH . '/DNI/EsaludDNI.php');
 require_once(CERVICE_PATH . '/DNI/JNE.php');
@@ -159,6 +158,18 @@ class PageController extends Controller
             http_response_code(404);
         } else {
             $this->render('404.view.php', [
+                'message' => $message
+            ], 'layouts/site.layout.php');
+        }
+    }
+    public function error403()
+    {
+        $message = isset($_GET['message']) ? $_GET['message'] : '';
+
+        if (strtolower($_SERVER['HTTP_ACCEPT']) === 'application/json') {
+            http_response_code(403);
+        } else {
+            $this->render('403.view.php', [
                 'message' => $message
             ], 'layouts/site.layout.php');
         }

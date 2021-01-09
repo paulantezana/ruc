@@ -2,6 +2,7 @@
 
 require_once(MODEL_PATH . '/User.php');
 require_once(MODEL_PATH . '/UserForgot.php');
+require_once(MODEL_PATH . '/UserToken.php');
 require_once(MODEL_PATH . '/AppAuthorization.php');
 require_once(CERVICE_PATH . '/SendManager/EmailManager.php');
 
@@ -20,6 +21,10 @@ class UserController extends Controller
 
     public function login()
     {
+        if (isset($_SESSION[SESS_KEY])) {
+            $this->redirect('/');
+        }
+        
         try {
             if (isset($_POST['commit'])) {
                 try {
@@ -65,12 +70,18 @@ class UserController extends Controller
 
     public function register()
     {
+        if (isset($_SESSION[SESS_KEY])) {
+            $this->redirect('/');
+        }
+        
+
         try {
             $message = '';
             $messageType = '';
             $error = [];
 
             if (isset($_POST['commit'])) {
+                $this->connection->beginTransaction();
                 try {
                     if (!isset($_POST['register'])) {
                         throw new Exception('No se proporcionó ningun dato');
@@ -96,15 +107,8 @@ class UserController extends Controller
                         'userRoleId' => 1,
                     ], 0);
 
-                    $loginUser = $this->userModel->getById($userId);
-                    $responseApp = $this->initApp($loginUser);
-                    if (!$responseApp->success) {
-                        session_destroy();
-                        $this->render('403.view.php', [
-                            'message' => $responseApp->message,
-                        ]);
-                        return;
-                    }
+                    $userTokenModel = new UserToken($this->connection);
+                    userTokenSign($userTokenModel, $userId, $userId);
 
                     $urlApp = HOST . URL_PATH . '/user/login';
                     $resEmail = EmailManager::send(
@@ -122,9 +126,21 @@ class UserController extends Controller
                         throw new Exception($resEmail->message);
                     }
 
+                    $loginUser = $this->userModel->getById($userId);
+                    $responseApp = $this->initApp($loginUser);
+                    if (!$responseApp->success) {
+                        session_destroy();
+                        $this->render('403.view.php', [
+                            'message' => $responseApp->message,
+                        ]);
+                        return;
+                    }
+                    
+                    $this->connection->commit();
                     $this->redirect('/');
                     return;
                 } catch (Exception $e) {
+                    $this->connection->rollBack();
                     $message = $e->getMessage();
                     $messageType = 'error';
                 }

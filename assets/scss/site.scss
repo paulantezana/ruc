@@ -32,3 +32,6 @@ $headerHeight: 56px;
 @import 'global/UserMenu.scss';
 
 @import 'customSedna.scss';
+
+@import 'global/SnControlGroup.scss';
+@include SnControlGroup();

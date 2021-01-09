@@ -130,3 +130,45 @@ function RUCIsValid($valor)
     }
     return false;
 }
+
+
+function userTokenSign(UserToken $userTokenModel, int $userId, int $userAuthId){
+    $userToken = $userTokenModel->getByUserId($userId);
+    if($userToken == false){
+        $userToken['user_token_id'] = $userTokenModel->insert([
+            'apiToken' => '',
+            'userId' => $userId,
+        ],$userAuthId);
+    }
+    
+    $payload = [
+        'userId' => $userId,
+        'userTokenId' => $userToken['user_token_id'],
+    ];
+
+    $token = ApiSign::encode($payload);
+    $userTokenModel->updateById($userId,[
+        'api_token' => $token
+    ]);
+    
+    return [
+        'token' => $token,
+        'userTokenId' => $userToken['user_token_id'],
+    ];
+}
+
+function stringDateDiff($dt_menor, $dt_maior)
+{
+    if (is_string($dt_menor)) $dt_menor = date_create($dt_menor);
+    if (is_string($dt_maior)) $dt_maior = date_create($dt_maior);
+
+    $diff = date_diff($dt_menor, $dt_maior, false);
+
+    $total = ((($diff->y * 365.25 + $diff->m * 30 + $diff->d) * 24 + $diff->h) * 60 + $diff->i) * 60 + $diff->s;
+
+    if ($diff->invert == 1) {
+        return -1 * $total;
+    } else {
+        return $total;
+    }
+}
