@@ -7,6 +7,7 @@ require_once(MODEL_PATH . '/Census.php');
 require_once(CERVICE_PATH . '/SendManager/EmailManager.php');
 require_once(CERVICE_PATH . '/DNI/EsaludDNI.php');
 require_once(CERVICE_PATH . '/DNI/JNE.php');
+require_once(CERVICE_PATH . '/DNI/Fact.php');
 
 class PageController extends Controller
 {
@@ -80,31 +81,25 @@ class PageController extends Controller
                     'census' => $census,
                 ],'',true);
             } else {
-                $esalud = new EsaludDNI();
-                $responseEsalud = $esalud->query($documentNumber);
-
-                if (!$responseEsalud->success){
-                    $responseJne = JNE::query($documentNumber);
-                    if (!$responseJne->success){
-                        throw new Exception($res->message);
-                    }
-
+                $factRes = new FactDni();
+                $responseFact = $factRes->query($documentNumber);
+                if (!$responseFact->success){
                     $pearson = [
-                        'name' => $responseJne->result['name'],
-                        'motherLastName' => $responseJne->result['motherLastName'],
-                        'lastName' => $responseJne->result['lastName'],
-                        'documentNumber' => $responseJne->result['documentNumber'],
+                        'name' => $responseFact->result['name'],
+                        'motherLastName' => $responseFact->result['motherLastName'],
+                        'lastName' => $responseFact->result['lastName'],
+                        'documentNumber' => $responseFact->result['documentNumber'],
                         'sex' => '',
                         'birthDate' => '',
                     ];
                 } else {
                     $pearson = [
-                        'name' => $responseEsalud->result['name'],
-                        'motherLastName' => $responseEsalud->result['motherLastName'],
-                        'lastName' => $responseEsalud->result['lastName'],
-                        'documentNumber' => $responseEsalud->result['documentNumber'],
-                        'sex' => $responseEsalud->result['sex'],
-                        'birthDate' => $responseEsalud->result['birthDate'],
+                        'name' => $responseFact->result['name'],
+                        'motherLastName' => $responseFact->result['motherLastName'],
+                        'lastName' => $responseFact->result['lastName'],
+                        'documentNumber' => $responseFact->result['documentNumber'],
+                        'sex' => '',
+                        'birthDate' => '',
                     ];
                 }
 
